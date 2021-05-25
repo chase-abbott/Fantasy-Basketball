@@ -14,11 +14,12 @@ import {
   Redirect
 } from 'react-router-dom';
 import './App.css';
+import DraftPage from '../draft-page/DraftPage';
 
 class App extends Component {
   
-  
   state = {
+
     token: window.localStorage.getItem('TOKEN'),
     userId: window.localStorage.getItem('USER_ID'),
     userName: window.localStorage.getItem('USER_NAME')
@@ -59,6 +60,50 @@ class App extends Component {
       </div>
     );
 
+
+//comment
+  render() {
+    return (
+      <div className="App">
+        <Router>
+          <Header/>
+          <main>
+
+            <Switch>
+              <Route path="/" exact={true}
+                render={routerProps => (
+                  <Home {...routerProps}/>
+                )}
+              />
+              <Route path="/auth" exact={true}
+                render={routerProps => (
+                  <Home {...routerProps}/>
+                )}
+              />
+
+              <Route path="/draft" exact={true}
+                render={routerProps => (
+                  <DraftPage {...routerProps}/>
+                )}
+              />
+
+              <Route path="/players"
+                render={routerProps => (
+                  <div>Implement a page for id {routerProps.match.params.id}</div>
+                )}
+              />
+
+              <Redirect to="/" />
+
+            </Switch>
+          </main>
+          <Footer/>
+        </Router>
+      </div>
+    );
+
+
+ 
 
 handleUser = user => {
   window.localStorage.setItem('USER_NAME', user.name);
