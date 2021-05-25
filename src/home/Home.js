@@ -8,7 +8,9 @@ export default class Home extends Component {
     return (
       <div className="Home">
         <h2>Home Page</h2>
-        <Link to='/resources'>See the List</Link>
+
+        <Link to='/auth'>Click Here To Sign In or Sign Up!</Link>
+
       </div>
     );
   }
