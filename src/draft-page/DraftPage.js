@@ -3,6 +3,7 @@ import './DraftPage.css';
 import request from 'superagent';
 import PlayerList from '../player-list/PlayerList';
 import PlayerSearch from '../search/PlayerSearch';
+import DraftedPlayers from '../common/DraftedPlayers';
 
 const TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjIxOTAyODU4fQ.tRu7bBBANIKuKyhArWA9RQe_0QotG8hD8K3KXm3q0eo';
 //To utils folder:
@@ -77,6 +78,9 @@ export default class DraftPage extends Component {
       <div className="DraftPage">
         <PlayerSearch onSearch={this.handleSearch}/>
         <PlayerList players={this.state.players} onDraft={this.handleDraft}/>
+        <DraftedPlayers players={this.state.draftedPlayers}/>
+        <DraftedPlayers/>
+        <DraftedPlayers/>
       </div>
     );
   }

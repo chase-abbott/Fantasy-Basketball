@@ -7,8 +7,6 @@ export default class PlayerItem extends Component {
     }
   handleDraftClick = async (player) => {
     await this.props.onDraft(player);
-    
-    // this.setState({ isDrafted: true });
     this.setState({ isDrafted: this.props.player.hasBeenDrafted });
   }
   render() {
