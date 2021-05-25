@@ -81,6 +81,7 @@ export default class TeamPage extends Component {
         .get('/api/me/players')
         .set('Authorization', token);
       if (response) {
+        // need to write first five players in response go to startingFive, next five go to bench
         this.setState({ myTeam: response.body });
       }
     }
@@ -113,7 +114,7 @@ export default class TeamPage extends Component {
       const [reorderedSourceItem] = sourceArray.splice(result.source.index, 1);
       const [reorderDestinationItem] = destinationArray.splice(result.destination.index, 1);
 
-      //
+      // places new item into array
       destinationArray.splice(result.destination.index, 0, reorderedSourceItem);
       sourceArray.splice(result.source.index, 0, reorderDestinationItem);
 
@@ -139,6 +140,8 @@ export default class TeamPage extends Component {
       this.setState({ bench: items });
     }
   }
+
+  // create handleDrag function
 
   render() {
     const { bench, startingFive } = this.state;
