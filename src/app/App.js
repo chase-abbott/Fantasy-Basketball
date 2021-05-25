@@ -25,14 +25,19 @@ class App extends Component {
                   <Home {...routerProps}/>
                 )}
               />
+              <Route path="/auth" exact={true}
+                render={routerProps => (
+                  <Home {...routerProps}/>
+                )}
+              />
 
-              <Route path="/resources" exact={true}
+              <Route path="/draft" exact={true}
                 render={routerProps => (
                   <div>Implement a page of resources</div>
                 )}
               />
 
-              <Route path="/resources/:id"
+              <Route path="/players"
                 render={routerProps => (
                   <div>Implement a page for id {routerProps.match.params.id}</div>
                 )}
