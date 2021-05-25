@@ -29,19 +29,32 @@ export default class DraftPage extends Component {
     user1Drafted: [],
     user2Drafted: [],
     user3Drafted: [],
-    user: 'gabriel',
+    user: window.localStorage.getItem('USER_NAME'),
     users: []
   }
-  
+ //userName and id as props
   async componentDidMount() {
-    console.log(this.state.users);
     socketLogIn(this.state.user);
     socketOtherLogIn((users) => this.setState({ users: users }));
-    
-
+    const { draftedPlayers, users } = this.state;
+ 
     socketOnChange((change) => this.setState({ draftedPlayers: change }));
+    // console.log(this.state.draftedPlayers);
+    const userOneDrafted = draftedPlayers.filter(player => {
+     
+      return player.userName === users[0].user;
+            
+    });
+    const userTwoDrafted = draftedPlayers.filter(player => {
+      return player.userName === users[1].user;
+            
+    });
+    const userThreeDrafted = draftedPlayers.filter(player => {
+      return player.userName === users[2].user;
+            
+    });
      //update players to change button state too
-    const { draftedPlayers } = this.state;
+
     const playersFromApi = await getPlayers();
 
     const players = playersFromApi.sort((a, b) => {
@@ -52,8 +65,8 @@ export default class DraftPage extends Component {
       return matchingPlayer ? matchingPlayer : player;
     });
 
-    this.setState({ players: updatedPlayers });
-    console.log(this.state.users);
+    this.setState({ players: updatedPlayers, user1Drafted: userOneDrafted, user2Drafted: userTwoDrafted, user3Drafted: userThreeDrafted });
+  
 
   }
   handleSearch = (search) => {
@@ -83,8 +96,8 @@ export default class DraftPage extends Component {
     const updatedPlayers = players.map(p => {
       return p.playerId === player.playerId ? player : p;
     });
-    socketEmitChange(updatedDrafted);
-    console.log(' user', users[0].user);
+    
+
     const userOneDrafted = draftedPlayers.filter(player => {
      
       return player.userName === users[0].user;
@@ -98,7 +111,7 @@ export default class DraftPage extends Component {
       return player.userName === users[2].user;
             
     });
-    
+    socketEmitChange(player);
     this.setState({ players: updatedPlayers, draftedPlayers: updatedDrafted, user1Drafted: userOneDrafted, user2Drafted: userTwoDrafted, user3Drafted: userThreeDrafted });
     
     
