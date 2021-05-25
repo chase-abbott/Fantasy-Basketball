@@ -12,9 +12,10 @@ export default class NewsItem extends Component {
     }
   
     render() {
+      const { news } = this.state;
       return (
         <div className="NewsItem">
-          <p>jesus christ </p>
+          <p> {news} </p>
         </div>
       );
     }

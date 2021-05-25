@@ -5,12 +5,12 @@ import NewsItem from '../common/NewsItem';
 
 const variants = {
   animate: {
-    x: [860, -935],
+    x: [860, -20535],
     transition: {
       x: {
         repeat: Infinity,
         repeatType: 'loop',
-        duration: 15,
+        duration: 100,
         ease: 'linear',
       },
     },
@@ -21,7 +21,6 @@ export default class Ticker extends Component {
 
   
   render() {
-    const { news } = this.props;
     return (
       <motion.div
         className='track'
