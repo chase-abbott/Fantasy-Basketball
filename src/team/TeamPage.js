@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import PlayerItem from '../common/PlayerItem';
-// import request from 'superagent';
+import request from 'superagent';
 import './TeamPage.css';
 
 export default class TeamPage extends Component {
@@ -71,22 +71,23 @@ export default class TeamPage extends Component {
     loading: false
   }
 
-  // componentDidMount = async () => {
-  //   try {
-  //     const { token } = this.state;
+  componentDidMount = async () => {
+    try {
+      const { token } = this.state;
 
-  //     this.setState({ loading: true });
+      this.setState({ loading: true });
 
-  //     const response = request
-  //       .get('/api/me/players')
-  //       .set('Authorization', token);
-
-  //     this.setState({ myTeam: response.body });
-  //   }
-  //   finally {
-  //     this.setState({ loading: false });
-  //   }
-  // }
+      const response = request
+        .get('/api/me/players')
+        .set('Authorization', token);
+      if (response) {
+        this.setState({ myTeam: response.body });
+      }
+    }
+    finally {
+      this.setState({ loading: false });
+    }
+  }
 
   handleDragEnd = result => {
     console.log(result);
@@ -112,6 +113,7 @@ export default class TeamPage extends Component {
       const [reorderedSourceItem] = sourceArray.splice(result.source.index, 1);
       const [reorderDestinationItem] = destinationArray.splice(result.destination.index, 1);
 
+      //
       destinationArray.splice(result.destination.index, 0, reorderedSourceItem);
       sourceArray.splice(result.source.index, 0, reorderDestinationItem);
 
