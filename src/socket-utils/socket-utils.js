@@ -5,6 +5,9 @@ const socket = io('http://localhost:3000/');
 export function socketLogIn(user) {
   socket.emit('logged-in', user);
 }
+export function socketOtherLogIn(callback) {
+  socket.on('logged-in', users => callback(users));
+}
 
 export function socketEmitChange(change) {
   socket.emit('stateChange', change);
