@@ -9,6 +9,7 @@ import {
   Redirect
 } from 'react-router-dom';
 import './App.css';
+import DraftPage from '../draft-page/DraftPage';
 
 class App extends Component {
 //comment
@@ -33,7 +34,7 @@ class App extends Component {
 
               <Route path="/draft" exact={true}
                 render={routerProps => (
-                  <div>Implement a page of resources</div>
+                  <DraftPage {...routerProps}/>
                 )}
               />
 
