@@ -4,7 +4,7 @@ import request from 'superagent';
 import PlayerList from '../player-list/PlayerList';
 import PlayerSearch from '../search/PlayerSearch';
 import DraftedPlayers from '../common/DraftedPlayers';
-
+import { socketEmitChange, socketLogIn, socketOnChange } from '../socket-utils/socket-utils.js';
 const TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjIxOTAyODU4fQ.tRu7bBBANIKuKyhArWA9RQe_0QotG8hD8K3KXm3q0eo';
 //To utils folder:
 async function getPlayers() {
@@ -25,11 +25,17 @@ export default class DraftPage extends Component {
   state = {
     players: [],
     search: '',
-    draftedPlayers: []
+    draftedPlayers: [],
+    user: '1'
   }
   
   async componentDidMount() {
     const { draftedPlayers } = this.state;
+    // socketLogIn(user);
+    socketOnChange((change) => this.setState({ draftedPlayers: change }));
+
+    
+    
     const playersFromApi = await getPlayers();
  
     const players = playersFromApi.sort((a, b) => {
@@ -47,13 +53,14 @@ export default class DraftPage extends Component {
   }
   handleSearch = (search) => {
     const { players } = this.state;
+    
     const aRegex = new RegExp(search, 'i');
     const searchedPlayer = players.filter(player => {
       return player.name.match(aRegex);
     }).sort((a, b) => {
       return b.fantasyPoints - a.fantasyPoints;
     });
-    console.log(searchedPlayer);
+   
     if (searchedPlayer.length > 0){
       this.setState({ players: searchedPlayer });
     } else return;
@@ -70,6 +77,7 @@ export default class DraftPage extends Component {
     const updatedPlayers = players.map(p => {
       return p.playerId === player.playerId ? player : p;
     });
+    socketEmitChange(updatedDrafted);
     this.setState({ players: updatedPlayers, draftedPlayers: updatedDrafted });
     
   };
