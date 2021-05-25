@@ -5,6 +5,7 @@
 .track {
     position: absolute;
     white-space: nowrap;
+    background-color: lightblue;
 }
 
 .track > h1 {

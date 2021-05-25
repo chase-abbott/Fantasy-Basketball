@@ -10,6 +10,5 @@ export async function getNews() {
   const results3 = results2.replaceAll('"}', '');
   const results4 = results3.replaceAll('[', '');
   const results5 = results4.replaceAll(']', '');
-  console.log(results5);
   return results5;
 }
