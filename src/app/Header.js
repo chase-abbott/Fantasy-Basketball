@@ -6,9 +6,7 @@ class Header extends Component {
   render() { 
     return (
       <header className="Header">
-
-        <h1>React App</h1>
-        
+        THIS HEADER NEEDS LINKS
       </header>
     );
   }
