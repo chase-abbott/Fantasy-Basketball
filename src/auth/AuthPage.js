@@ -46,7 +46,7 @@ export default class AuthPage extends Component {
   }
   
   render() {
-    const { isSignUp, name, email, password } = this.state;
+    const { isSignUp, name, email, password, error } = this.state;
     return (
       <form className="AuthPage" onSubmit={this.handleSubmit}>
         {isSignUp && <p>
@@ -73,6 +73,8 @@ export default class AuthPage extends Component {
         <p>
           <button type="submit">Sign {isSignUp ? 'Up' : 'In'}</button>
         </p>
+
+        {error && <p>{error}</p>}
       </form>
     );
   }
