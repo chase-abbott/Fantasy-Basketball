@@ -1,5 +1,5 @@
 import io from 'socket.io-client';
-
+//pass down socket in app.js
 const socket = io('http://localhost:3000/');
 
 export function socketLogIn(user) {
