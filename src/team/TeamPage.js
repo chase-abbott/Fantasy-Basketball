@@ -1,7 +1,7 @@
-import { Component, useState } from 'react';
+import { Component } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import PlayerItem from '../common/PlayerItem';
-// import request from 'superagent';
+import request from 'superagent';
 import './TeamPage.css';
 
 export default class TeamPage extends Component {
@@ -88,22 +88,22 @@ export default class TeamPage extends Component {
     loading: false
   }
 
-// componentDidMount = async () => {
-//   try {
-//     const { token } = this.state;
+componentDidMount = async () => {
+  try {
+    const { token } = this.state;
 
-//     this.setState({ loading: true });
+    this.setState({ loading: true });
 
-//     const response = request
-//       .get('/api/me/players')
-//       .set('Authorization', token);
+    const response = request
+      .get('/api/me/players')
+      .set('Authorization', token);
 
-//     this.setState({ myTeam: response.body });
-//   }
-//   finally {
-//     this.setState({ loading: false });
-//   }
-// }
+    this.setState({ myTeam: response.body });
+  }
+  finally {
+    this.setState({ loading: false });
+  }
+}
 
 handleDragEnd = result => {
   if (!result.destination) return;
