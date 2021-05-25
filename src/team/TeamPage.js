@@ -90,23 +90,46 @@ export default class TeamPage extends Component {
 
   handleDragEnd = result => {
     console.log(result);
+
+    // if the result destination is undefined, stop function
     if (!result.destination) return;
+
     const { bench, startingFive } = this.state;
+    const isNewList = (result.destination.droppableId !== result.source.droppableId);
 
     // determines if tile is put in the other list
-    if (result.destination.droppableId !== result.source.droppableId) {
+    if (isNewList) {
+
+      // saves id 
+      const sourceString = result.source.droppableId;
+      const destinationString = result.destination.droppableId;
+
+      // finds matching array in state
+      const sourceArray = this.state[sourceString];
+      const destinationArray = this.state[destinationString];
+
+      // grabs individual items and pulls them out of their current array
+      const [reorderedSourceItem] = sourceArray.splice(result.source.index, 1);
+      const [reorderDestinationItem] = destinationArray.splice(result.destination.index, 1);
+
+      destinationArray.splice(result.destination.index, 0, reorderedSourceItem);
+      sourceArray.splice(result.source.index, 0, reorderDestinationItem);
+
+      this.setState({ [sourceString]: sourceArray, [destinationString]: destinationArray });
 
     }
 
-    if (result.destination.droppableId === 'startingFive') {
+    if (result.destination.droppableId === 'startingFive' && !isNewList) {
       // reorders players in startingFive array
       const newItems = Array.from(startingFive);
+
       const [reorderedNewItem] = newItems.splice(result.source.index, 1);
+
       newItems.splice(result.destination.index, 0, reorderedNewItem);
       this.setState({ startingFive: newItems });
     }
 
-    if (result.destination.droppableId === 'bench') {
+    if (result.destination.droppableId === 'bench' && !isNewList) {
       // reorders players in myTeam array
       const items = Array.from(bench);
       const [reorderedItem] = items.splice(result.source.index, 1);
@@ -121,7 +144,7 @@ export default class TeamPage extends Component {
     return (
       <div >
         {bench || startingFive
-          ? <div>
+          ? <div className="container">
             <h2> Starting Five </h2>
             <DragDropContext onDragEnd={this.handleDragEnd}>
               <Droppable droppableId="startingFive" direction="horizontal">
@@ -143,6 +166,7 @@ export default class TeamPage extends Component {
                   </ul>
                 )}
               </Droppable>
+              <h2> Bench </h2>
               <Droppable droppableId="bench" direction="horizontal">
                 {(provided) => (
                   <ul {...provided.droppableProps} ref={provided.innerRef} className="TeamPage">
