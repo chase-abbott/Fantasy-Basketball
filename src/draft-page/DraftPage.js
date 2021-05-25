@@ -38,7 +38,7 @@ export default class DraftPage extends Component {
     socketOtherLogIn((users) => this.setState({ users: users }));
     const { draftedPlayers, users } = this.state;
  
-    socketOnChange((change) => this.setState({ draftedPlayers: change }));
+    socketOnChange((draftedPlayers, userOneDrafted, userTwoDrafted, userThreeDrafted) => this.setState({ draftedPlayers: draftedPlayers, user1Drafted: userOneDrafted, user2Drafted: userTwoDrafted, user3Drafted: userThreeDrafted }));
     // console.log(this.state.draftedPlayers);
     const userOneDrafted = draftedPlayers.filter(player => {
      
@@ -88,26 +88,27 @@ export default class DraftPage extends Component {
   }
 
   handleDraft = async (player) => {
-    const { draftedPlayers, players, users } = this.state;
+    const { draftedPlayers, players, users, user } = this.state;
     await favoritePlayer(player);
     player.hasBeenDrafted = true;
-    player.userName = users[0].user;
+    player.userName = user;
     const updatedDrafted = [...draftedPlayers, player];
+    console.log(updatedDrafted);
     const updatedPlayers = players.map(p => {
       return p.playerId === player.playerId ? player : p;
     });
     
 
-    const userOneDrafted = draftedPlayers.filter(player => {
+    const userOneDrafted = updatedDrafted.filter(player => {
      
       return player.userName === users[0].user;
             
     });
-    const userTwoDrafted = draftedPlayers.filter(player => {
+    const userTwoDrafted = updatedDrafted.filter(player => {
       return player.userName === users[1].user;
             
     });
-    const userThreeDrafted = draftedPlayers.filter(player => {
+    const userThreeDrafted = updatedDrafted.filter(player => {
       return player.userName === users[2].user;
             
     });
@@ -117,14 +118,14 @@ export default class DraftPage extends Component {
     
   };
   render() {
-    const { user1Drafted, user2Drafted, user3Drafted } = this.state;
+    const { user1Drafted, user2Drafted, user3Drafted, users } = this.state;
     return (
       <div className="DraftPage">
         <PlayerSearch onSearch={this.handleSearch}/>
         <PlayerList players={this.state.players} onDraft={this.handleDraft}/>
-        <DraftedPlayers players={user1Drafted}/>
-        <DraftedPlayers players={user2Drafted}/>
-        <DraftedPlayers players={user3Drafted}/>
+        <DraftedPlayers players={user1Drafted} player={users[0]}/>
+        <DraftedPlayers players={user2Drafted} player={users[1]}/>
+        <DraftedPlayers players={user3Drafted} player={users[2]}/>
     
         
       </div>
