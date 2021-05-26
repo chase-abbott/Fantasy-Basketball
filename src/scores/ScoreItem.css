@@ -1,6 +1,6 @@
 li {    
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     border: 2px solid red;
     margin: 5px;
@@ -16,7 +16,14 @@ li {
 .homeTeam span {
     color: red;
 }
+.awayTeam {
+    color: red
+}
+
+.awayTeam span {
+    color: blue;
+}
 
 li h2 {
-    margin: 5px;
+    margin: 10px;
 }
