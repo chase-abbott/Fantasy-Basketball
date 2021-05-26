@@ -3,6 +3,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import PlayerItem from '../common/PlayerItem';
 import request from 'superagent';
 import './TeamPage.css';
+import { addTotalPoints } from '../utils.js';
 
 export default class TeamPage extends Component {
   state = {
@@ -68,21 +69,25 @@ export default class TeamPage extends Component {
       'fantasyPoints': 0
     }],
     token: window.localStorage.getItem('TOKEN'),
-    loading: false
+    loading: false,
+    projectedPoints: 0
   }
 
   componentDidMount = async () => {
     try {
-      const { token } = this.state;
-
-      this.setState({ loading: true });
+      const { token, startingFive } = this.state;
+      const points = addTotalPoints(startingFive);
+      this.setState({ loading: true, projectedPoints: points });
 
       const response = request
         .get('/api/me/players')
         .set('Authorization', token);
-      if (response) {
-        // need to write first five players in response go to startingFive, next five go to bench
-        this.setState({ myTeam: response.body });
+      if (response.body) {
+        // need to change to mungeTeam in utils.js, function not working atm
+        const bench = response.body;
+        const newTeamArray = bench.splice(0, 4);
+        const points = addTotalPoints(newTeamArray);
+        this.setState({ bench: bench, startingFive: newTeamArray, projectedPoints: points });
       }
     }
     finally {
@@ -139,12 +144,12 @@ export default class TeamPage extends Component {
       items.splice(result.destination.index, 0, reorderedItem);
       this.setState({ bench: items });
     }
+    this.setState({ projectedPoints: addTotalPoints(startingFive) });
   }
 
-  // create handleDrag function
 
   render() {
-    const { bench, startingFive } = this.state;
+    const { bench, startingFive, projectedPoints } = this.state;
 
     return (
       <div >
@@ -152,17 +157,29 @@ export default class TeamPage extends Component {
           ? <div className="container">
             <h2> Starting Five </h2>
             <DragDropContext onDragEnd={this.handleDragEnd}>
-              <Droppable droppableId="startingFive" direction="horizontal">
+              <Droppable
+                droppableId="startingFive"
+                direction="horizontal"
+              >
                 {(provided) => (
-                  <ul {...provided.droppableProps} ref={provided.innerRef} className="TeamPage">
+                  <ul
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                    className="TeamPage"
+                  >
                     {startingFive.map((player, index) => {
 
-                      return (<Draggable key={player.playerId} draggableId={String(player.playerId)} index={index}>
+                      return (<Draggable
+                        key={player.playerId}
+                        draggableId={String(player.playerId)}
+                        index={index}
+                      >
                         {(provided) => (
                           <PlayerItem
                             reference={provided.innerRef}
                             provided={provided}
-                            player={player} />
+                            player={player}
+                          />
                         )}
 
                       </Draggable>);
@@ -171,6 +188,7 @@ export default class TeamPage extends Component {
                   </ul>
                 )}
               </Droppable>
+              <p> Project total points = {projectedPoints}</p>
               <h2> Bench </h2>
               <Droppable droppableId="bench" direction="horizontal">
                 {(provided) => (
@@ -182,7 +200,8 @@ export default class TeamPage extends Component {
                           <PlayerItem
                             reference={provided.innerRef}
                             provided={provided}
-                            player={player} />
+                            player={player}
+                          />
                         )}
 
                       </Draggable>);
