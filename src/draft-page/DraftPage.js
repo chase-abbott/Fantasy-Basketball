@@ -46,7 +46,7 @@ export default class DraftPage extends Component {
  
     socketOnChange((draftedPlayers, userOneDrafted, userTwoDrafted, userThreeDrafted) => this.setState({ draftedPlayers: draftedPlayers, user1Drafted: userOneDrafted, user2Drafted: userTwoDrafted, user3Drafted: userThreeDrafted }));
   
-
+//
     const playersFromApi = await getPlayers();
 
     const players = playersFromApi.sort((a, b) => {
