@@ -39,7 +39,6 @@ class App extends Component {
         <Router>
           <Header />
           <main>
-
             <Switch>
               <Route path="/" exact={true}
                 render={routerProps => (
