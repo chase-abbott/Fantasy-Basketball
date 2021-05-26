@@ -38,6 +38,16 @@ export default class DraftPage extends Component {
  //userName and id as props
   async componentDidMount() {
     const { draftedPlayers } = this.state;
+
+    // added by Chase, deletes current user players, teams from db
+    await request
+      .delete(`/api/me/players/${window.localStorage.getItem('USER_ID')}`)
+      .set('Authorization', window.localStorage.getItem('TOKEN'));
+    
+    await request
+      .delete(`/api/me/teams/${window.localStorage.getItem('USER_ID')}`)
+      .set.set('Authorization', window.localStorage.getItem('TOKEN'));
+
     socketOnStart((user, interval, time) => {
       this.setState({ currentPlayer: user, time: time });
     
@@ -102,6 +112,7 @@ export default class DraftPage extends Component {
    
 
   }
+
   render() {
     const { user1Drafted, user2Drafted, user3Drafted, users, currentPlayer, time, user, loggedIn } = this.state;
     return (
@@ -116,8 +127,6 @@ export default class DraftPage extends Component {
         <DraftedPlayers players={user1Drafted} player={users[0]}/>
         <DraftedPlayers players={user2Drafted} player={users[1]}/>
         <DraftedPlayers players={user3Drafted} player={users[2]}/>
-    
-        
       </div>
     );
   }
