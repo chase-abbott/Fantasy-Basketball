@@ -28,7 +28,7 @@ export default class Ticker extends Component {
         variants={variants}
         animate='animate'
       >
-        <h1> <NewsItem/> </h1>
+        <h1 style={{ margin:'10px' }}> <NewsItem/> </h1>
 
       </motion.div>
     );
