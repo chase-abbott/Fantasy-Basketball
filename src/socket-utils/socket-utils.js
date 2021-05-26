@@ -18,7 +18,7 @@ export function socketEmitChange(change) {
 // export function socketOnChange(callback) {
 //   socket.on('stateChange', change => callback(change));
 // }
-
+//
 export function socketOnChange(callback) {
   socket.on('stateChange', (draftedPlayers, userOneDrafted, userTwoDrafted, userThreeDrafted) => callback(draftedPlayers, userOneDrafted, userTwoDrafted, userThreeDrafted));
 }
