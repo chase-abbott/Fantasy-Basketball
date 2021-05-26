@@ -63,7 +63,7 @@ export default class DraftPage extends Component {
 
     this.setState({ players: updatedPlayers });
   
-
+//
   }
   handleSearch = (search) => {
     const { players } = this.state;
