@@ -4,7 +4,7 @@ import request from 'superagent';
 import PlayerList from '../player-list/PlayerList';
 import PlayerSearch from '../search/PlayerSearch';
 import DraftedPlayers from '../common/DraftedPlayers';
-import { socketEmitChange, socketLogIn, socketOnChange, socketOtherLogIn } from '../socket-utils/socket-utils.js';
+import { socketEmitChange, socketLogIn, socketOnChange, socketOtherLogIn, socketOnStart } from '../socket-utils/socket-utils.js';
 const TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjIxOTAyODU4fQ.tRu7bBBANIKuKyhArWA9RQe_0QotG8hD8K3KXm3q0eo';
 //To utils folder:
 async function getPlayers() {
@@ -30,30 +30,22 @@ export default class DraftPage extends Component {
     user2Drafted: [],
     user3Drafted: [],
     user: window.localStorage.getItem('USER_NAME'),
-    users: []
+    users: [],
+    currentPlayer: '',
+    time: 0
   }
  //userName and id as props
   async componentDidMount() {
-    socketLogIn(this.state.user);
+    const { draftedPlayers } = this.state;
+    socketOnStart((user, interval, time) => {
+      this.setState({ currentPlayer: user, time: time });
+    
+    });
     socketOtherLogIn((users) => this.setState({ users: users }));
-    const { draftedPlayers, users } = this.state;
+    
  
     socketOnChange((draftedPlayers, userOneDrafted, userTwoDrafted, userThreeDrafted) => this.setState({ draftedPlayers: draftedPlayers, user1Drafted: userOneDrafted, user2Drafted: userTwoDrafted, user3Drafted: userThreeDrafted }));
-    // console.log(this.state.draftedPlayers);
-    const userOneDrafted = draftedPlayers.filter(player => {
-     
-      return player.userName === users[0].user;
-            
-    });
-    const userTwoDrafted = draftedPlayers.filter(player => {
-      return player.userName === users[1].user;
-            
-    });
-    const userThreeDrafted = draftedPlayers.filter(player => {
-      return player.userName === users[2].user;
-            
-    });
-     //update players to change button state too
+  
 
     const playersFromApi = await getPlayers();
 
@@ -65,7 +57,7 @@ export default class DraftPage extends Component {
       return matchingPlayer ? matchingPlayer : player;
     });
 
-    this.setState({ players: updatedPlayers, user1Drafted: userOneDrafted, user2Drafted: userTwoDrafted, user3Drafted: userThreeDrafted });
+    this.setState({ players: updatedPlayers });
   
 
   }
@@ -88,7 +80,7 @@ export default class DraftPage extends Component {
   }
 
   handleDraft = async (player) => {
-    const { draftedPlayers, players, users, user } = this.state;
+    const { draftedPlayers, players, user } = this.state;
     await favoritePlayer(player);
     player.hasBeenDrafted = true;
     player.userName = user;
@@ -97,32 +89,28 @@ export default class DraftPage extends Component {
     const updatedPlayers = players.map(p => {
       return p.playerId === player.playerId ? player : p;
     });
-    
-
-    const userOneDrafted = updatedDrafted.filter(player => {
-     
-      return player.userName === users[0].user;
-            
-    });
-    const userTwoDrafted = updatedDrafted.filter(player => {
-      return player.userName === users[1].user;
-            
-    });
-    const userThreeDrafted = updatedDrafted.filter(player => {
-      return player.userName === users[2].user;
-            
-    });
     socketEmitChange(player);
-    this.setState({ players: updatedPlayers, draftedPlayers: updatedDrafted, user1Drafted: userOneDrafted, user2Drafted: userTwoDrafted, user3Drafted: userThreeDrafted });
-    
+    this.setState({ players: updatedPlayers });
     
   };
+
+  handleLogin = () => {
+    socketLogIn(this.state.user);
+    socketOtherLogIn((users) => this.setState({ users: users }));
+   
+
+  }
   render() {
-    const { user1Drafted, user2Drafted, user3Drafted, users } = this.state;
+    const { user1Drafted, user2Drafted, user3Drafted, users, currentPlayer, time, user } = this.state;
     return (
       <div className="DraftPage">
-        <PlayerSearch onSearch={this.handleSearch}/>
-        <PlayerList players={this.state.players} onDraft={this.handleDraft}/>
+        <button onClick={this.handleLogin}></button>
+        <h5>Time: {time}</h5>
+        {currentPlayer.user === user && 
+        <>
+          <PlayerSearch onSearch={this.handleSearch}/>
+          <PlayerList players={this.state.players} onDraft={this.handleDraft}/>
+        </>}
         <DraftedPlayers players={user1Drafted} player={users[0]}/>
         <DraftedPlayers players={user2Drafted} player={users[1]}/>
         <DraftedPlayers players={user3Drafted} player={users[2]}/>
