@@ -2,7 +2,7 @@ import io from 'socket.io-client';
 // const SOCKET_URL = 'http://localhost:3000/';
 const SOCKET_URL = 'https://fathomless-springs-43889.herokuapp.com/';
 const socket = io(SOCKET_URL);
-
+//
 export function socketLogIn(user) {
   socket.emit('logged-in', user);
 }
