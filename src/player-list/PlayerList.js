@@ -14,5 +14,4 @@ export default class PlayerList extends Component {
       </div>
     );
   }
-
 }
