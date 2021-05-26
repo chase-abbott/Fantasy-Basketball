@@ -46,7 +46,7 @@ export default class DraftPage extends Component {
     socketOtherLogIn((users) => this.setState({ users: users }));
     
  
-    socketOnChange((draftedPlayers, userOneDrafted, userTwoDrafted, userThreeDrafted) => this.setState({ draftedPlayers: draftedPlayers, user1Drafted: userOneDrafted, user2Drafted: userTwoDrafted, user3Drafted: userThreeDrafted }));
+    socketOnChange((players, draftedPlayers, userOneDrafted, userTwoDrafted, userThreeDrafted) => this.setState({ players, draftedPlayers: draftedPlayers, user1Drafted: userOneDrafted, user2Drafted: userTwoDrafted, user3Drafted: userThreeDrafted }));
   
 //comment
     const playersFromApi = await getPlayers();
@@ -90,7 +90,7 @@ export default class DraftPage extends Component {
     const updatedPlayers = players.map(p => {
       return p.playerId === player.playerId ? player : p;
     });
-    socketEmitChange(player);
+    socketEmitChange(player, updatedPlayers);
     this.setState({ players: updatedPlayers });
     
   };

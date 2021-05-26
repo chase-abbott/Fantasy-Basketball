@@ -11,8 +11,8 @@ export function socketOtherLogIn(callback) {
   socket.on('logged-in', users => callback(users));
 }
 
-export function socketEmitChange(change) {
-  socket.emit('stateChange', change);
+export function socketEmitChange(change, players) {
+  socket.emit('stateChange', change, players);
 }
 
 // export function socketOnChange(callback) {
@@ -20,7 +20,7 @@ export function socketEmitChange(change) {
 // }
 //
 export function socketOnChange(callback) {
-  socket.on('stateChange', (draftedPlayers, userOneDrafted, userTwoDrafted, userThreeDrafted) => callback(draftedPlayers, userOneDrafted, userTwoDrafted, userThreeDrafted));
+  socket.on('stateChange', (players, draftedPlayers, userOneDrafted, userTwoDrafted, userThreeDrafted) => callback(players, draftedPlayers, userOneDrafted, userTwoDrafted, userThreeDrafted));
 }
 export function socketOnStart(callback) {
   socket.on('start', (user, interval, time) => callback(user, interval, time));
