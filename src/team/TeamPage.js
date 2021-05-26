@@ -70,7 +70,9 @@ export default class TeamPage extends Component {
     }],
     token: window.localStorage.getItem('TOKEN'),
     loading: false,
-    projectedPoints: 0
+    projectedPoints: 0,
+    teamId: 0,
+    team: []
   }
 
   componentDidMount = async () => {
@@ -80,14 +82,13 @@ export default class TeamPage extends Component {
       this.setState({ loading: true, projectedPoints: points });
 
       const response = request
-        .get('/api/me/players')
+        .get('/api/me/team')
         .set('Authorization', token);
+
       if (response.body) {
         // need to change to mungeTeam in utils.js, function not working atm
-        const bench = response.body;
-        const newTeamArray = bench.splice(0, 4);
-        const points = addTotalPoints(newTeamArray);
-        this.setState({ bench: bench, startingFive: newTeamArray, projectedPoints: points });
+        const updatedPoints = addTotalPoints(startingFive);
+        this.setState({ bench: await response.body.bench, startingFive: await response.body.startingFive, projectedPoints: updatedPoints, teamId: response.body.id, team: response.body.team });
       }
     }
     finally {
@@ -95,13 +96,12 @@ export default class TeamPage extends Component {
     }
   }
 
-  handleDragEnd = result => {
-    console.log(result);
+  handleDragEnd = async (result) => {
 
     // if the result destination is undefined, stop function
     if (!result.destination) return;
 
-    const { bench, startingFive } = this.state;
+    const { bench, startingFive, teamId, team, token } = this.state;
     const isNewList = (result.destination.droppableId !== result.source.droppableId);
 
     // determines if tile is put in the other list
@@ -122,6 +122,18 @@ export default class TeamPage extends Component {
       // places new item into array
       destinationArray.splice(result.destination.index, 0, reorderedSourceItem);
       sourceArray.splice(result.source.index, 0, reorderDestinationItem);
+
+      const updatedTeam = {
+        id: teamId,
+        team: team,
+        [sourceString]: sourceArray,
+        [destinationString]: destinationArray
+      };
+
+      await request
+        .put(`/api/me/team/${teamId}`)
+        .set('Authorization', token)
+        .send(updatedTeam);
 
       this.setState({ [sourceString]: sourceArray, [destinationString]: destinationArray });
 
@@ -188,7 +200,7 @@ export default class TeamPage extends Component {
                   </ul>
                 )}
               </Droppable>
-              <p> Project total points = {projectedPoints}</p>
+              <p className="points"> Project total points = {projectedPoints}</p>
               <h2> Bench </h2>
               <Droppable droppableId="bench" direction="horizontal">
                 {(provided) => (

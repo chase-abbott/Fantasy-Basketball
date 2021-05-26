@@ -18,14 +18,14 @@ export async function signIn(credentials) {
 
 export function mungeTeams(team) {
   const arr = [];
-  const findPG = team.find(player => (player.postion === 'PG'));
-  const findSG = team.find(player => (player.postion === 'SG'));
-  const findSF = team.find(player => (player.postion === 'SF'));
-  const findPF = team.find(player => (player.postion === 'PF'));
-  const findC = team.find(player => (player.postion === 'C'));
-  arr.push(findPG, findSG, findSF, findPF, findC);
+  const filterPG = team.filter(player => (player.postion === 'PG'));
+  const filterSG = team.filter(player => (player.postion === 'SG'));
+  const filterSF = team.filter(player => (player.postion === 'SF'));
+  const filterPF = team.filter(player => (player.postion === 'PF'));
+  const filterC = team.filter(player => (player.postion === 'C'));
+  arr.push(filterPG[0], filterSG[0], filterSF[0], filterPF[0], filterC[0]);
   const remainingPlayers = team.filter(player => {
-    return (player.id !== findPG.id) || (player.id !== findSG.id) || (player.id !== findSF.id) || (player.id !== findPF.id) || (player.id !== findC.id);
+    return (player.id !== filterPG[0].id) || (player.id !== filterSG[0].id) || (player.id !== filterSF[0].id) || (player.id !== filterPF[0].id) || (player.id !== filterC[0].id);
   });
   return [arr, remainingPlayers];
 }
