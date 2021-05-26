@@ -79,10 +79,7 @@ export default class DraftPage extends Component {
     
 
   }
-handleButtonDisable = () => {
-  const { user, users } = this.state;
-  return users.find(user.user === user);
-}
+
   handleDraft = async (player) => {
     const { draftedPlayers, players, user } = this.state;
     await favoritePlayer(player);
