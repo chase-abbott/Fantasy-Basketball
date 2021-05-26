@@ -1,5 +1,4 @@
 import io from 'socket.io-client';
-//pass down socket in app.js
 // const SOCKET_URL = 'http://localhost:3000/';
 const SOCKET_URL = 'https://fathomless-springs-43889.herokuapp.com/draft/';
 const socket = io(SOCKET_URL);
