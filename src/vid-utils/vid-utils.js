@@ -1,8 +1,8 @@
 import request from 'superagent';
 
-export async function getScores() {
+export async function getVids() {
   const response = await request
-    .get('/api/scores')
+    .get('/api/vids')
     .set('Authorization', window.localStorage.getItem('TOKEN'));
   return response.body;
 }
