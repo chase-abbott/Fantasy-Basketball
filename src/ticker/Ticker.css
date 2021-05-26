@@ -1,0 +1,15 @@
+.Ticker {
+  
+}
+
+.track {
+    position: absolute;
+    white-space: nowrap;
+    background-color: lightblue;
+}
+
+.track > h1 {
+    margin: 20px 0;
+    font-size: 1rem;
+    color: rgb(0, 0, 0);
+}
