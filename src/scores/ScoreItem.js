@@ -1,5 +1,4 @@
 import { Component } from 'react';
-// import { getScores } from '../score-utils/score-utils';
 import './ScoreItem.css';
 
 export default class ScoreItem extends Component {
@@ -15,8 +14,6 @@ export default class ScoreItem extends Component {
         <h2 className='awayTeam'>{score.awayTeam}: <span>{score.awayScore}</span></h2>
         <h2>Projected Spread: {score.spread}</h2>
         <h2>Projected Over/Under: {score.overUnder}</h2>
-        
-
         
       </li>
     );
