@@ -38,15 +38,26 @@ export default class DraftPage extends Component {
  //userName and id as props
   async componentDidMount() {
     const { draftedPlayers } = this.state;
+    const token = window.localStorage.getItem('TOKEN');
 
     // added by Chase, deletes current user players, teams from db
-    await request
-      .delete(`/api/me/players/${window.localStorage.getItem('USER_ID')}`)
+
+    const myPlayers = await request
+      .get('/api/me/players')
       .set('Authorization', window.localStorage.getItem('TOKEN'));
-    
-    await request
-      .delete(`/api/me/teams/${window.localStorage.getItem('USER_ID')}`)
-      .set.set('Authorization', window.localStorage.getItem('TOKEN'));
+
+
+    if (myPlayers.body[1]){
+
+      await request
+        .delete(`/api/me/players/${window.localStorage.getItem('USER_ID')}`)
+        .set('Authorization', token);
+        
+      await request
+        .delete(`/api/me/team/${window.localStorage.getItem('USER_ID')}`)
+        .set.set('Authorization', token);
+
+    }
 
     socketOnStart((user, interval, time) => {
       this.setState({ currentPlayer: user, time: time });
@@ -70,9 +81,8 @@ export default class DraftPage extends Component {
     });
 
     this.setState({ players: updatedPlayers });
-  
-
   }
+
   handleSearch = (search) => {
     const { players } = this.state;
     
@@ -86,9 +96,6 @@ export default class DraftPage extends Component {
     if (searchedPlayer.length > 0){
       this.setState({ players: searchedPlayer });
     } else return;
-
-    
-
   }
 
   handleDraft = async (player) => {

@@ -16,18 +16,26 @@ export async function signIn(credentials) {
   return response.body;
 }
 
-export function mungeTeams(team) {
-  const arr = [];
-  const filterPG = team.filter(player => (player.postion === 'PG'));
-  const filterSG = team.filter(player => (player.postion === 'SG'));
-  const filterSF = team.filter(player => (player.postion === 'SF'));
-  const filterPF = team.filter(player => (player.postion === 'PF'));
-  const filterC = team.filter(player => (player.postion === 'C'));
-  arr.push(filterPG[0], filterSG[0], filterSF[0], filterPF[0], filterC[0]);
-  const remainingPlayers = team.filter(player => {
-    return (player.id !== filterPG[0].id) || (player.id !== filterSG[0].id) || (player.id !== filterSF[0].id) || (player.id !== filterPF[0].id) || (player.id !== filterC[0].id);
-  });
-  return [arr, remainingPlayers];
+export function mungeTeam(team){
+  const newTeam = {};
+
+  newTeam.team = {
+    data: team
+  };
+
+  const startingFive = [team[0], team[1], team[2], team[3], team[4]];
+
+  newTeam.startingFive = {
+    data: startingFive
+  };
+
+  const bench = [team[5], team[6], team[7], team[8], team[9]];
+
+  newTeam.bench = {
+    data: bench
+  };
+
+  return newTeam;
 }
 
 export function addTotalPoints(startingFive) {
