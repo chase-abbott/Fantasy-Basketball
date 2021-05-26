@@ -4,8 +4,8 @@ import request from 'superagent';
 import PlayerList from '../player-list/PlayerList';
 import PlayerSearch from '../search/PlayerSearch';
 import DraftedPlayers from '../common/DraftedPlayers';
-import { socketEmitChange, socketLogIn, socketOnChange, socketOtherLogIn, socketOnStart } from '../socket-utils/socket-utils.js';
-const TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjIxOTAyODU4fQ.tRu7bBBANIKuKyhArWA9RQe_0QotG8hD8K3KXm3q0eo';
+import { socketEmitChange, socketLogIn, socketOnChange, socketOtherLogIn, socketOnStart, socketCurrentPlayer } from '../socket-utils/socket-utils.js';
+const TOKEN = window.localStorage.getItem('TOKEN');
 //To utils folder:
 async function getPlayers() {
   const response = await request.get('api/players')
@@ -32,7 +32,8 @@ export default class DraftPage extends Component {
     user: window.localStorage.getItem('USER_NAME'),
     users: [],
     currentPlayer: '',
-    time: 0
+    time: 0,
+    loggedIn: false
   }
  //userName and id as props
   async componentDidMount() {
@@ -41,6 +42,7 @@ export default class DraftPage extends Component {
       this.setState({ currentPlayer: user, time: time });
     
     });
+    socketCurrentPlayer((user) => {this.setState({ currentPlayer: user });});
     socketOtherLogIn((users) => this.setState({ users: users }));
     
  
@@ -80,12 +82,11 @@ export default class DraftPage extends Component {
   }
 
   handleDraft = async (player) => {
-    const { draftedPlayers, players, user } = this.state;
+    const { players, user } = this.state;
     await favoritePlayer(player);
     player.hasBeenDrafted = true;
     player.userName = user;
-    const updatedDrafted = [...draftedPlayers, player];
-    console.log(updatedDrafted);
+    //change player item to boolean userName
     const updatedPlayers = players.map(p => {
       return p.playerId === player.playerId ? player : p;
     });
@@ -97,14 +98,15 @@ export default class DraftPage extends Component {
   handleLogin = () => {
     socketLogIn(this.state.user);
     socketOtherLogIn((users) => this.setState({ users: users }));
+    this.setState({ loggedIn: true });
    
 
   }
   render() {
-    const { user1Drafted, user2Drafted, user3Drafted, users, currentPlayer, time, user } = this.state;
+    const { user1Drafted, user2Drafted, user3Drafted, users, currentPlayer, time, user, loggedIn } = this.state;
     return (
       <div className="DraftPage">
-        <button onClick={this.handleLogin}></button>
+        <button onClick={this.handleLogin} disabled={loggedIn}>Start Draft</button>
         <h5>Time: {time}</h5>
         {currentPlayer.user === user && 
         <>
