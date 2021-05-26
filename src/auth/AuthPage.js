@@ -73,6 +73,9 @@ export default class AuthPage extends Component {
         <p>
           <button type="submit">Sign {isSignUp ? 'Up' : 'In'}</button>
         </p>
+        <p>
+          <button type="button" onClick={this.handleSwitch}>{isSignUp ? 'Already Have an Account?' : 'Need an account?'}</button>
+        </p>
 
         {error && <p>{error}</p>}
       </form>

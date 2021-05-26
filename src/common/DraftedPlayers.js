@@ -2,19 +2,16 @@ import { Component } from 'react';
 import './DraftedPlayers.css';
 
 export default class DraftedPlayers extends Component {
-  state = {
-    players: []
-  }
-  
+ 
 
   render() {
       
-    const { players } = this.props;
-    console.log(players);
+    const { players, player } = this.props;
+   
     
     return (
       <div className="DraftedPlayers">
-        <h1>Teams</h1>
+        <h6>{player ? player.user : ''} Team</h6>
         
         <ul >
           {players && players.map(player => {
