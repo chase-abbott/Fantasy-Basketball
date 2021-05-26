@@ -33,7 +33,8 @@ export default class DraftPage extends Component {
     users: [],
     currentPlayer: '',
     time: 0,
-    loggedIn: false
+    loggedIn: false,
+    searchedPlayers: null
   }
  //userName and id as props
   async componentDidMount() {
@@ -67,15 +68,13 @@ export default class DraftPage extends Component {
     const { players } = this.state;
     
     const aRegex = new RegExp(search, 'i');
-    const searchedPlayer = players.filter(player => {
+    const searchedPlayers = players.filter(player => {
       return player.name.match(aRegex);
     }).sort((a, b) => {
       return b.fantasyPoints - a.fantasyPoints;
     });
    
-    if (searchedPlayer.length > 0){
-      this.setState({ players: searchedPlayer });
-    } else return;
+    this.setState({ searchedPlayers: searchedPlayers });
 
     
 
@@ -91,7 +90,7 @@ export default class DraftPage extends Component {
       return p.playerId === player.playerId ? player : p;
     });
     socketEmitChange(player, updatedPlayers);
-    this.setState({ players: updatedPlayers });
+    this.setState({ searchedPlayers: updatedPlayers });
     
   };
 
@@ -103,7 +102,7 @@ export default class DraftPage extends Component {
 
   }
   render() {
-    const { user1Drafted, user2Drafted, user3Drafted, users, currentPlayer, time, user, loggedIn } = this.state;
+    const { user1Drafted, user2Drafted, user3Drafted, users, currentPlayer, time, user, loggedIn, searchedPlayers, players } = this.state;
     return (
       <div className="DraftPage">
         <button onClick={this.handleLogin} disabled={loggedIn}>Start Draft</button>
@@ -111,7 +110,7 @@ export default class DraftPage extends Component {
         {currentPlayer.user === user && 
         <>
           <PlayerSearch onSearch={this.handleSearch}/>
-          <PlayerList players={this.state.players} onDraft={this.handleDraft}/>
+          <PlayerList players={searchedPlayers ? searchedPlayers : players} onDraft={this.handleDraft}/>
         </>}
         <DraftedPlayers players={user1Drafted} player={users[0]}/>
         <DraftedPlayers players={user2Drafted} player={users[1]}/>
