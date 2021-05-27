@@ -42,6 +42,7 @@ export default class TeamPage extends Component {
  }
 
   componentDidMount = async () => {
+    this.mounted = true;
     try {
       const { token } = this.state;
       // const points = addTotalPoints(startingFive);
@@ -55,9 +56,7 @@ export default class TeamPage extends Component {
         .get('/api/me/team')
         .set('Authorization', token);
 
-      console.log(teamResponse.body[0]);
       
-    
       if (playerResponse.body && !teamResponse.body[0]) {
         
         const mungedTeam = mungeTeam(playerResponse.body);
@@ -68,12 +67,19 @@ export default class TeamPage extends Component {
           .set('Authorization', token)
           .send(mungedTeam);
 
-          
         const points = addTotalPoints(newTeam.startingFive);
-        this.setState({ bench: newTeam.body.bench, startingFive: newTeam.body.startingFive, team: newTeam.body.team, projectedPoints: points, teamId: newTeam.body.id });
+
+        if (this.mounted){
+          this.setState({ bench: newTeam.body.bench, startingFive: newTeam.body.startingFive, team: newTeam.body.team, projectedPoints: points, teamId: newTeam.body.id });
+        }
+
       } else {
         await this.setTeam(teamResponse.body[0]);
         this.setState({ projectedPoints: addTotalPoints(teamResponse.body[0].startingFive) });
+
+        if (this.mounted) {
+
+        }
         
       }
     }
@@ -117,8 +123,7 @@ export default class TeamPage extends Component {
       this.setState({ [sourceString]: sourceArray, [destinationString]: destinationArray });
 
 
-      const newTeam = await this.updateTeam(this.state);
-      console.log(newTeam);
+      await this.updateTeam(this.state);
 
     }
 
@@ -142,6 +147,9 @@ export default class TeamPage extends Component {
     this.setState({ projectedPoints: addTotalPoints(startingFive) });
   }
 
+  componentWillUnmount = () => {
+    this.mounted = false;
+  }
 
   render() {
     const { bench, startingFive, projectedPoints } = this.state;

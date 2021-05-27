@@ -50,16 +50,15 @@ export default class DraftPage extends Component {
     console.log(myPlayers);
     
     if (myPlayers.body[0] !== undefined) {
-      
-      const deletedPlayers = await request
+      await request
         .delete(`/api/me/players/${window.localStorage.getItem('USER_ID')}`)
         .set('Authorization', window.localStorage.getItem('TOKEN'));
       
-      console.log(deletedPlayers);
-      const deletedTeams = await request
+      
+      await request
         .delete(`/api/me/team/${window.localStorage.getItem('USER_ID')}`)
         .set('Authorization', window.localStorage.getItem('TOKEN'));
-      console.log(deletedTeams);
+      
 
     }
 
