@@ -6,6 +6,9 @@ import Ticker from '../ticker/Ticker';
 import './Home.css';
 
 export default class Home extends Component {
+  handleClick = () => {
+    window.confirm();
+  }
   
   render() {
     const { scores } = this.props;
@@ -14,9 +17,9 @@ export default class Home extends Component {
         <Ticker/>
         <ScoreList className='scoreList' scores={scores}/>
         <div className='draftLink'>
-          <Link to='/draft'>DRAFT TIME</Link>
+          <Link to='/draft' onClick={this.handleClick}>DRAFT TIME</Link>
         </div>
-        {/* <VideoList/> */}
+        <VideoList/>
       </div>
     );
   }
