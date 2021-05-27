@@ -4,7 +4,7 @@ import request from 'superagent';
 import PlayerList from '../player-list/PlayerList';
 import PlayerSearch from '../search/PlayerSearch';
 import DraftedPlayers from '../common/DraftedPlayers';
-import { socketEmitChange, socketLogIn, socketOnChange, socketOtherLogIn, socketOnStart, socketCurrentPlayer } from '../socket-utils/socket-utils.js';
+import { socketEmitChange, socketEmitLogin, socketOnChange, socketOtherLogIn, socketOnStart, socketCurrentPlayer } from '../socket-utils/socket-utils.js';
 const TOKEN = window.localStorage.getItem('TOKEN');
 //To utils folder:
 async function getPlayers() {
@@ -99,7 +99,8 @@ export default class DraftPage extends Component {
   };
 
   handleLogin = () => {
-    socketLogIn(this.state.user);
+    socketEmitLogin(this.state.user);
+    //get rid of?
     socketOtherLogIn((users) => this.setState({ users: users }));
     this.setState({ loggedIn: true });
    
