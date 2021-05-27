@@ -46,5 +46,5 @@ export function addTotalPoints(startingFive) {
 }
 
 export function findNull(teamArray){
-  return teamArray.find((element) => element === null);
+  return teamArray.find(element => element === null);
 }
