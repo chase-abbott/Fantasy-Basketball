@@ -109,7 +109,7 @@ export default class DraftPage extends Component {
   }
 
   handleDraft = async (player) => {
-    const { players, user, } = this.state;
+    const { players, user } = this.state;
     await favoritePlayer(player);
     player.hasBeenDrafted = true;
     player.userId = user.userId;
