@@ -31,3 +31,12 @@ export function socketOnCurrentPlayer(callback) {
 export function socketOnEndDraft(callback) {
   socket.on('end-draft', () => callback());
 }
+
+
+export function socketEmitMessage(message) {
+  socket.emit('chat-message', (message));
+}
+
+export function socketOnMessageIn(callback) {
+  socket.on('chat-message', (messages) => callback(messages));
+}

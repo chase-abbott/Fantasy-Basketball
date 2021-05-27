@@ -5,6 +5,7 @@ import PlayerList from '../player-list/PlayerList';
 import PlayerSearch from '../search/PlayerSearch';
 import DraftedPlayers from '../common/DraftedPlayers';
 import { socketEmitChange, socketEmitLogin, socketOnChange, socketOnLogin, socketOnStart, socketOnCurrentPlayer, socketOnEndDraft } from '../socket-utils/socket-utils.js';
+import ChatBox from '../common/ChatBox';
 const TOKEN = window.localStorage.getItem('TOKEN');
 //To utils folder:
 async function getPlayers() {
@@ -127,8 +128,8 @@ export default class DraftPage extends Component {
         <DraftedPlayers players={userOneDrafted} user={users[0]}/>
         <DraftedPlayers players={userTwoDrafted} user={users[1]}/>
         <DraftedPlayers players={userThreeDrafted} user={users[2]}/>
-    
-        
+        <ChatBox/>
+
       </div>
     );
   }
