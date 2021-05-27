@@ -6,19 +6,21 @@ import PlayerSearch from '../search/PlayerSearch';
 import DraftedPlayers from '../common/DraftedPlayers';
 import { socketEmitChange, socketEmitLogin, socketOnChange, socketOnLogin, socketOnStart, socketOnCurrentPlayer, socketOnEndDraft } from '../socket-utils/socket-utils.js';
 import ChatBox from '../common/ChatBox';
-const TOKEN = window.localStorage.getItem('TOKEN');
 //To utils folder:
 async function getPlayers() {
+  
+
   const response = await request.get('api/players')
-    .set('Authorization', TOKEN);
+    .set('Authorization', window.localStorage.getItem('TOKEN'));
   return response.body;
 }
 
 async function favoritePlayer(player) {
   player.userId = window.localStorage.getItem('USER_ID');
+  
 
   const response = await request.post('/api/me/players')
-    .set('Authorization', TOKEN)
+    .set('Authorization', window.localStorage.getItem('TOKEN'))
     .send(player);
   return response.body;
 }
@@ -43,10 +45,9 @@ export default class DraftPage extends Component {
  //userName and id as props
   async componentDidMount() {
     const { draftedPlayers } = this.state;
-    const token = window.localStorage.getItem('TOKEN');
     const myPlayers = await request
       .get('/api/me/players')
-      .set('Authorization', token);
+      .set('Authorization', window.localStorage.getItem('TOKEN'));
     console.log(myPlayers);
     if (myPlayers.body[0] !== undefined) {
       await request
