@@ -4,17 +4,19 @@ import './Header.css';
 
 class Header extends Component {
 
-  handleClick = async () => {
+  handleClick = () => {
     window.localStorage.clear();
-    this.forceUpdate();
+    window.location.reload();
   }
+
+
 
   render() { 
     let key = window.localStorage.getItem('TOKEN');
     if (key) {
       return (
         <header className="Header">
-          <Link to='/myteam'>My Team</Link>
+          <Link to='/myteam' > My Team</Link>
           <Link to='/auth' onClick={this.handleClick}>Sign Out</Link>
           <Link to='/'>Home</Link>
         </header>
