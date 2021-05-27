@@ -7,25 +7,24 @@ export function socketEmitLogin(user) {
   socket.emit('logged-in', user);
 }
 
-export function socketOtherLogIn(callback) {
-  
+export function socketOnLogin(callback) {
   socket.on('logged-in', users => callback(users));
 }
 
 export function socketEmitChange(change, players) {
-  socket.emit('stateChange', change, players);
+  socket.emit('state-change', change, players);
 }
 
 // export function socketOnChange(callback) {
-//   socket.on('stateChange', change => callback(change));
+//   socket.on('state-change', change => callback(change));
 // }
 //
 export function socketOnChange(callback) {
-  socket.on('stateChange', (players, draftedPlayers, userOneDrafted, userTwoDrafted, userThreeDrafted) => callback(players, draftedPlayers, userOneDrafted, userTwoDrafted, userThreeDrafted));
+  socket.on('state-change', (players, draftedPlayers, userOneDrafted, userTwoDrafted, userThreeDrafted) => callback(players, draftedPlayers, userOneDrafted, userTwoDrafted, userThreeDrafted));
 }
 export function socketOnStart(callback) {
   socket.on('start', (user, interval, time) => callback(user, interval, time));
 }
 export function socketCurrentPlayer(callback) {
-  socket.on('current-player', (user) => callback(user));
+  socket.on('current-user', (user) => callback(user));
 }

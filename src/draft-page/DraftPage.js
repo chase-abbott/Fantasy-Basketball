@@ -4,7 +4,7 @@ import request from 'superagent';
 import PlayerList from '../player-list/PlayerList';
 import PlayerSearch from '../search/PlayerSearch';
 import DraftedPlayers from '../common/DraftedPlayers';
-import { socketEmitChange, socketEmitLogin, socketOnChange, socketOtherLogIn, socketOnStart, socketCurrentPlayer } from '../socket-utils/socket-utils.js';
+import { socketEmitChange, socketEmitLogin, socketOnChange, socketOnLogin, socketOnStart, socketCurrentPlayer } from '../socket-utils/socket-utils.js';
 const TOKEN = window.localStorage.getItem('TOKEN');
 //To utils folder:
 async function getPlayers() {
@@ -26,9 +26,9 @@ export default class DraftPage extends Component {
     players: [],
     search: '',
     draftedPlayers: [],
-    user1Drafted: [],
-    user2Drafted: [],
-    user3Drafted: [],
+    userOneDrafted: [],
+    userTwoDrafted: [],
+    userThreeDrafted: [],
     user: {},
     users: [],
     currentUser: '',
@@ -44,15 +44,15 @@ export default class DraftPage extends Component {
     this.setState({ user: { userId: userId, userName: userName } });
 
     const { draftedPlayers } = this.state;
-    socketOnStart((user, interval, time) => {
+    socketOnStart((user, draftTime, time) => {
       this.setState({ currentUser: user, time: time });
     
     });
     socketCurrentPlayer((user) => {this.setState({ currentUser: user });});
-    socketOtherLogIn((users) => this.setState({ users: users }));
+    socketOnLogin((users) => this.setState({ users: users }));
     
  
-    socketOnChange((players, draftedPlayers, userOneDrafted, userTwoDrafted, userThreeDrafted) => this.setState({ players, draftedPlayers: draftedPlayers, user1Drafted: userOneDrafted, user2Drafted: userTwoDrafted, user3Drafted: userThreeDrafted }));
+    socketOnChange((players, draftedPlayers, userOneDrafted, userTwoDrafted, userThreeDrafted) => this.setState({ players, draftedPlayers: draftedPlayers, userOneDrafted: userOneDrafted, userTwoDrafted: userTwoDrafted, user3Drafted: userThreeDrafted }));
   
 //comment
     const playersFromApi = await getPlayers();
@@ -105,13 +105,13 @@ export default class DraftPage extends Component {
   handleLogin = () => {
     socketEmitLogin(this.state.user);
     //get rid of?
-    socketOtherLogIn((users) => this.setState({ users: users }));
+    socketOnLogin((users) => this.setState({ users: users }));
     this.setState({ loggedIn: true });
    
 
   }
   render() {
-    const { user1Drafted, user2Drafted, user3Drafted, users, currentUser, time, user, loggedIn, searchedPlayers, players, numberOfDrafted } = this.state;
+    const { userOneDrafted, userTwoDrafted, user3Drafted, users, currentUser, time, user, loggedIn, searchedPlayers, players, numberOfDrafted } = this.state;
     return (
       <div className="DraftPage">
         <button onClick={this.handleLogin} disabled={loggedIn}>Start Draft</button>
@@ -121,8 +121,8 @@ export default class DraftPage extends Component {
           <PlayerSearch onSearch={this.handleSearch}/>
           <PlayerList players={searchedPlayers ? searchedPlayers : players} onDraft={this.handleDraft}/>
         </>}
-        <DraftedPlayers players={user1Drafted} user={users[0]}/>
-        <DraftedPlayers players={user2Drafted} user={users[1]}/>
+        <DraftedPlayers players={userOneDrafted} user={users[0]}/>
+        <DraftedPlayers players={userTwoDrafted} user={users[1]}/>
         <DraftedPlayers players={user3Drafted} user={users[2]}/>
     
         
