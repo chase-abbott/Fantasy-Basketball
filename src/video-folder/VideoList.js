@@ -9,8 +9,13 @@ export default class VideoList extends Component {
     }
 
   componentDidMount = async () => {
-    const videos = await getVids();
-    this.setState({ videos: videos });
+    try {
+      const videos = await getVids();
+      this.setState({ videos: videos });
+    }
+    catch (err){
+      console.log(err);
+    }
   }
   
   render() {
