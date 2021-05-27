@@ -19,13 +19,13 @@ export default class VideoList extends Component {
   }
   
   render() {
-    // const { videos } = this.state;
+    const { videos } = this.state;
 
     return (
       <ul className="VideoList" style={{ marginTop: '50px' }}>
-        {/* {videos.map(video => (
+        {videos.map(video => (
           <VideoItem key={video.id} video={video}/>
-        ))} */}
+        ))}
       </ul>
     );
   }
