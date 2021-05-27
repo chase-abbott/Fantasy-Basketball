@@ -75,9 +75,9 @@ export default class TeamPage extends Component {
 
       } else {
         await this.setTeam(teamResponse.body[0]);
-        this.setState({ projectedPoints: addTotalPoints(teamResponse.body[0].startingFive) });
-
+        
         if (this.mounted) {
+          this.setState({ projectedPoints: addTotalPoints(teamResponse.body[0].startingFive) });
 
         }
         
