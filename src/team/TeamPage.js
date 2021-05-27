@@ -3,95 +3,65 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import PlayerItem from '../common/PlayerItem';
 import request from 'superagent';
 import './TeamPage.css';
-import { addTotalPoints } from '../utils.js';
+import { addTotalPoints, mungeTeam } from '../utils.js';
 
 export default class TeamPage extends Component {
   state = {
-    bench: [
-      {
-        'playerId': 20000452,
-        'name': 'Garrett Temple',
-        'position': 'SG',
-        'fantasyPoints': 23
-      },
-      {
-        'playerId': 20000453,
-        'name': 'Terrence Ross',
-        'position': 'SG',
-        'fantasyPoints': 37
-      },
-      {
-        'playerId': 20000455,
-        'name': 'Jonas Valanciunas',
-        'position': 'C',
-        'fantasyPoints': 52
-      },
-      {
-        'playerId': 20000456,
-        'name': 'DeMar DeRozan',
-        'position': 'SG',
-        'fantasyPoints': 61
-      },
-      {
-        'playerId': 20000457,
-        'name': 'Kyle Lowry',
-        'position': 'PG',
-        'fantasyPoints': 57
-      }],
-    startingFive: [{
-      'playerId': 20000440,
-      'name': 'Marcin Gortat',
-      'position': 'C',
-      'fantasyPoints': 0
-    },
-    {
-      'playerId': 20000441,
-      'name': 'Bradley Beal',
-      'position': 'SG',
-      'fantasyPoints': 65
-    },
-    {
-      'playerId': 20000442,
-      'name': 'John Wall',
-      'position': 'PG',
-      'fantasyPoints': 57
-    },
-    {
-      'playerId': 20000443,
-      'name': 'Otto Porter Jr.',
-      'position': 'SF',
-      'fantasyPoints': 42
-    },
-    {
-      'playerId': 20000458,
-      'name': 'Amir Johnson',
-      'position': 'PF',
-      'fantasyPoints': 0
-    }],
+    bench: [],
+    startingFive: [],
     token: window.localStorage.getItem('TOKEN'),
     loading: false,
-    projectedPoints: 0
+    projectedPoints: 0,
+    team: [],
+    teamId: ''
+  }
+
+  setTeam = async (team) => {
+    this.setState({ bench: team.bench, startingFive: team.startingFive, team: team.team, teamId: team.id });
   }
 
   componentDidMount = async () => {
     try {
-      const { token, startingFive } = this.state;
-      const points = addTotalPoints(startingFive);
-      this.setState({ loading: true, projectedPoints: points });
+      const { token } = this.state;
+      // const points = addTotalPoints(startingFive);
+      // this.setState({ loading: true, projectedPoints: points });
 
-      const response = request
+      const playerResponse = await request
         .get('/api/me/players')
         .set('Authorization', token);
-      if (response.body) {
-        // need to change to mungeTeam in utils.js, function not working atm
-        const bench = response.body;
-        const newTeamArray = bench.splice(0, 4);
-        const points = addTotalPoints(newTeamArray);
-        this.setState({ bench: bench, startingFive: newTeamArray, projectedPoints: points });
+
+      const teamResponse = await request
+        .get('/api/me/team')
+        .set('Authorization', token);
+
+      console.log(teamResponse.body[0]);
+      
+    
+      if (playerResponse.body && !teamResponse.body[0]) {
+        
+        const mungedTeam = mungeTeam(playerResponse.body);
+        mungedTeam.userId = window.localStorage.getItem('USER_ID');
+
+        const newTeam = await request
+          .post('/api/me/team')
+          .set('Authorization', token)
+          .send(mungedTeam);
+
+        console.log(newTeam);
+          
+        // const points = addTotalPoints(newTeam.startingFive);
+        this.setState({ bench: newTeam.body.bench, startingFive: newTeam.body.startingFive, team: newTeam.body.team, teamId: newTeam.body.id });
+      } else {
+        await this.setTeam(teamResponse.body[0]);
+        
       }
+    }
+    catch (err){
+      console.log(err);
     }
     finally {
       this.setState({ loading: false });
+      
     }
   }
 
