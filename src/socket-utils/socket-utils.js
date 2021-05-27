@@ -28,3 +28,6 @@ export function socketOnStart(callback) {
 export function socketOnCurrentPlayer(callback) {
   socket.on('current-user', (user) => callback(user));
 }
+export function socketOnEndDraft(callback) {
+  socket.on('end-draft', () => callback());
+}
