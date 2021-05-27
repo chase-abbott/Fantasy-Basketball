@@ -7,7 +7,11 @@ import './Home.css';
 
 export default class Home extends Component {
   handleClick = () => {
-    window.confirm();
+    let click = window.confirm();
+    if (click === false) {
+      window.open('/');
+    }
+    
   }
   
   render() {
