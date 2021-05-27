@@ -47,18 +47,21 @@ export default class DraftPage extends Component {
       .get('/api/me/players')
       .set('Authorization', token);
 
-    console.log(myPlayers.body);
+    console.log(myPlayers);
+    
+    if (myPlayers.body[0] !== undefined) {
+      
+      const deletedPlayers = await request
+        .delete(`/api/me/players/${window.localStorage.getItem('USER_ID')}`)
+        .set('Authorization', window.localStorage.getItem('TOKEN'));
+      
+      console.log(deletedPlayers);
+      const deletedTeams = await request
+        .delete(`/api/me/team/${window.localStorage.getItem('USER_ID')}`)
+        .set('Authorization', window.localStorage.getItem('TOKEN'));
+      console.log(deletedTeams);
 
-    // if (myPlayers.body[0] !== undefined) {
-    //   await request
-    //     .delete(`/api/me/players/${window.localStorage.getItem('USER_ID')}`)
-    //     .set('Authorization', window.localStorage.getItem('TOKEN'));
-
-    //   await request
-    //     .delete(`/api/me/teams/${window.localStorage.getItem('USER_ID')}`)
-    //     .set.set('Authorization', window.localStorage.getItem('TOKEN'));
-
-    // }
+    }
 
     socketOnStart((user, interval, time) => {
       this.setState({ currentPlayer: user, time: time });
