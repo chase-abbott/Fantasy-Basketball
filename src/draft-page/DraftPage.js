@@ -39,11 +39,12 @@ export default class DraftPage extends Component {
   }
  //userName and id as props
   async componentDidMount() {
+    
     const userId = window.localStorage.getItem('USER_ID');
     const userName = window.localStorage.getItem('USER_NAME');
     this.setState({ user: { userId: userId, userName: userName } });
 
-    const { draftedPlayers } = this.state;
+   
     socketOnStart((user, draftTime, time) => {
       this.setState({ currentUser: user, time: time });
     
@@ -52,9 +53,9 @@ export default class DraftPage extends Component {
     socketOnLogin((users) => this.setState({ users: users }));
     
  
-    socketOnChange((players, draftedPlayers, userOneDrafted, userTwoDrafted, userThreeDrafted) => this.setState({ players, draftedPlayers: draftedPlayers, userOneDrafted: userOneDrafted, userTwoDrafted: userTwoDrafted, user3Drafted: userThreeDrafted }));
-  
-//comment
+    socketOnChange((players, draftedPlayers, userOneDrafted, userTwoDrafted, userThreeDrafted) => this.setState({ players, draftedPlayers, userOneDrafted, userTwoDrafted, userThreeDrafted }));
+    const { draftedPlayers } = this.state;
+    
     const playersFromApi = await getPlayers();
 
     const players = playersFromApi.sort((a, b) => {
@@ -111,7 +112,7 @@ export default class DraftPage extends Component {
 
   }
   render() {
-    const { userOneDrafted, userTwoDrafted, user3Drafted, users, currentUser, time, user, loggedIn, searchedPlayers, players, numberOfDrafted } = this.state;
+    const { userOneDrafted, userTwoDrafted, userThreeDrafted, users, currentUser, time, user, loggedIn, searchedPlayers, players, numberOfDrafted } = this.state;
     return (
       <div className="DraftPage">
         <button onClick={this.handleLogin} disabled={loggedIn}>Start Draft</button>
@@ -123,7 +124,7 @@ export default class DraftPage extends Component {
         </>}
         <DraftedPlayers players={userOneDrafted} user={users[0]}/>
         <DraftedPlayers players={userTwoDrafted} user={users[1]}/>
-        <DraftedPlayers players={user3Drafted} user={users[2]}/>
+        <DraftedPlayers players={userThreeDrafted} user={users[2]}/>
     
         
       </div>
