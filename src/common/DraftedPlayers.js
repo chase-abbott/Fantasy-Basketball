@@ -6,12 +6,12 @@ export default class DraftedPlayers extends Component {
 
   render() {
       
-    const { players, player } = this.props;
+    const { players, user } = this.props;
    
     
     return (
       <div className="DraftedPlayers">
-        <h6>{player ? player.user : ''} Team</h6>
+        <h6>{user ? user.userName : ''} Team</h6>
         
         <ul >
           {players && players.map(player => {

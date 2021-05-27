@@ -12,5 +12,4 @@ export default class VideoItem extends Component {
       </li>
     );
   }
-
 }
