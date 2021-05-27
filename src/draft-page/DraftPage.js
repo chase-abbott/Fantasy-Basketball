@@ -115,10 +115,7 @@ export default class DraftPage extends Component {
     });
     socketEmitChange(player, updatedPlayers);
     
-    
-    
- 
-    
+  
   };
 
  
