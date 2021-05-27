@@ -1,5 +1,7 @@
 import { Component } from 'react';
 import { signIn, signUp } from '../auth-utils/auth-utils';
+import Button from 'react-bootstrap/Button';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './AuthPage.css';
 
 export default class AuthPage extends Component {
@@ -71,10 +73,10 @@ export default class AuthPage extends Component {
         </p>
 
         <p>
-          <button type="submit">Sign {isSignUp ? 'Up' : 'In'}</button>
+          <Button type="submit">Sign {isSignUp ? 'Up' : 'In'}</Button>
         </p>
         <p>
-          <button type="button" onClick={this.handleSwitch}>{isSignUp ? 'Already Have an Account?' : 'Need an account?'}</button>
+          <Button onClick={this.handleSwitch}>{isSignUp ? 'Already Have an Account?' : 'Need an account?'}</Button>
         </p>
 
         {error && <p>{error}</p>}

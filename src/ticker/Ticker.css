@@ -6,6 +6,7 @@
     position: absolute;
     white-space: nowrap;
     background-color: lightblue;
+    font-family: 'Playfair Display SC', serif;
 }
 
 .track > h1 {
