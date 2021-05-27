@@ -5,12 +5,12 @@ import NewsItem from '../common/NewsItem';
 
 const variants = {
   animate: {
-    x: '-4000vw',
+    x: '-3000vw',
     transition: {
       x: {
         repeat: Infinity,
         repeatType: 'loop',
-        duration: 1500,
+        duration: 600,
         ease: 'linear',
       },
     },
