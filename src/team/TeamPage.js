@@ -3,7 +3,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import PlayerItem from '../common/PlayerItem';
 import request from 'superagent';
 import './TeamPage.css';
-import { addTotalPoints, mungeTeam } from '../utils.js';
+import { addTotalPoints, mungeTeam, findNull } from '../utils.js';
 
 export default class TeamPage extends Component {
   state = {
@@ -16,9 +16,9 @@ export default class TeamPage extends Component {
     teamId: ''
   }
 
-  setTeam = async (team) => {
-    this.setState({ bench: team.bench, startingFive: team.startingFive, team: team.team, teamId: team.id });
-  }
+setTeam = async (team) => {
+  this.setState({ bench: team.bench, startingFive: team.startingFive, team: team.team, teamId: team.id });
+}
 
  updateTeam = async (state) => {
    const { teamId, token } = this.state;
@@ -152,11 +152,11 @@ export default class TeamPage extends Component {
   }
 
   render() {
-    const { bench, startingFive, projectedPoints } = this.state;
+    const { bench, startingFive, projectedPoints, team } = this.state;
 
     return (
       <div >
-        {bench || startingFive
+        {!findNull(team)
           ? <div className="container">
             <h2> Starting Five </h2>
             <DragDropContext onDragEnd={this.handleDragEnd}>
