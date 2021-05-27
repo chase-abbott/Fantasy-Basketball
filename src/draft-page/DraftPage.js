@@ -29,9 +29,9 @@ export default class DraftPage extends Component {
     user1Drafted: [],
     user2Drafted: [],
     user3Drafted: [],
-    user: window.localStorage.getItem('USER_NAME'),
+    user: {},
     users: [],
-    currentPlayer: '',
+    currentUser: '',
     time: 0,
     loggedIn: false,
     searchedPlayers: null,
@@ -39,12 +39,16 @@ export default class DraftPage extends Component {
   }
  //userName and id as props
   async componentDidMount() {
+    const userId = window.localStorage.getItem('USER_ID');
+    const userName = window.localStorage.getItem('USER_NAME');
+    this.setState({ user: { userId: userId, userName: userName } });
+
     const { draftedPlayers } = this.state;
     socketOnStart((user, interval, time) => {
-      this.setState({ currentPlayer: user, time: time });
+      this.setState({ currentUser: user, time: time });
     
     });
-    socketCurrentPlayer((user) => {this.setState({ currentPlayer: user });});
+    socketCurrentPlayer((user) => {this.setState({ currentUser: user });});
     socketOtherLogIn((users) => this.setState({ users: users }));
     
  
@@ -85,7 +89,7 @@ export default class DraftPage extends Component {
     const { players, user, numberOfDrafted } = this.state;
     await favoritePlayer(player);
     player.hasBeenDrafted = true;
-    player.userName = user;
+    player.userId = user.userId;
     //change player item to boolean userName
     const updatedPlayers = players.map(p => {
       return p.playerId === player.playerId ? player : p;
@@ -107,19 +111,19 @@ export default class DraftPage extends Component {
 
   }
   render() {
-    const { user1Drafted, user2Drafted, user3Drafted, users, currentPlayer, time, user, loggedIn, searchedPlayers, players, numberOfDrafted } = this.state;
+    const { user1Drafted, user2Drafted, user3Drafted, users, currentUser, time, user, loggedIn, searchedPlayers, players, numberOfDrafted } = this.state;
     return (
       <div className="DraftPage">
         <button onClick={this.handleLogin} disabled={loggedIn}>Start Draft</button>
         <h5>Time: {time}</h5>
-        {(currentPlayer.user === user && numberOfDrafted < 9) &&
+        {(currentUser.userId === user.userId && numberOfDrafted < 9) &&
         <>
           <PlayerSearch onSearch={this.handleSearch}/>
           <PlayerList players={searchedPlayers ? searchedPlayers : players} onDraft={this.handleDraft}/>
         </>}
-        <DraftedPlayers players={user1Drafted} player={users[0]}/>
-        <DraftedPlayers players={user2Drafted} player={users[1]}/>
-        <DraftedPlayers players={user3Drafted} player={users[2]}/>
+        <DraftedPlayers players={user1Drafted} user={users[0]}/>
+        <DraftedPlayers players={user2Drafted} user={users[1]}/>
+        <DraftedPlayers players={user3Drafted} user={users[2]}/>
     
         
       </div>
