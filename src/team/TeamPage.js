@@ -20,6 +20,27 @@ export default class TeamPage extends Component {
     this.setState({ bench: team.bench, startingFive: team.startingFive, team: team.team, teamId: team.id });
   }
 
+ updateTeam = async (state) => {
+   const { teamId, token } = this.state;
+   
+   const updatedTeam = {
+     team: state.team,
+     startingFive: state.startingFive,
+     bench: state.bench,
+     id: state.teamId
+   };
+   console.log(updatedTeam);
+
+   const response = await request
+     .put(`/api/me/team/${teamId}`)
+     .set('Authorization', token)
+     .send(updatedTeam);
+
+   console.log(response);
+
+   return response.body;
+ }
+
   componentDidMount = async () => {
     try {
       const { token } = this.state;
@@ -47,7 +68,6 @@ export default class TeamPage extends Component {
           .set('Authorization', token)
           .send(mungedTeam);
 
-        console.log(newTeam);
           
         // const points = addTotalPoints(newTeam.startingFive);
         this.setState({ bench: newTeam.body.bench, startingFive: newTeam.body.startingFive, team: newTeam.body.team, teamId: newTeam.body.id });
@@ -65,7 +85,7 @@ export default class TeamPage extends Component {
     }
   }
 
-  handleDragEnd = result => {
+  handleDragEnd = async (result) => {
     console.log(result);
 
     // if the result destination is undefined, stop function
@@ -94,6 +114,10 @@ export default class TeamPage extends Component {
       sourceArray.splice(result.source.index, 0, reorderDestinationItem);
 
       this.setState({ [sourceString]: sourceArray, [destinationString]: destinationArray });
+
+
+      const newTeam = await this.updateTeam(this.state);
+      console.log(newTeam);
 
     }
 

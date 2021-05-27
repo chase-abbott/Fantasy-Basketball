@@ -14,7 +14,7 @@ async function getPlayers() {
 }
 
 async function favoritePlayer(player) {
-  // player.userId = window.localStorage.getItem('USER_ID');
+  player.userId = window.localStorage.getItem('USER_ID');
   const response = await request.post('/api/me/players')
     .set('Authorization', TOKEN)
     .send(player);
