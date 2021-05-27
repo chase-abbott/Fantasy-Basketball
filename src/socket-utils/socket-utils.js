@@ -25,6 +25,6 @@ export function socketOnChange(callback) {
 export function socketOnStart(callback) {
   socket.on('start', (user, interval, time) => callback(user, interval, time));
 }
-export function socketCurrentPlayer(callback) {
+export function socketOnCurrentPlayer(callback) {
   socket.on('current-user', (user) => callback(user));
 }
