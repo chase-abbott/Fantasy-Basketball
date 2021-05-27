@@ -10,8 +10,8 @@ export default class VideoList extends Component {
 
   componentDidMount = async () => {
     try {
-      const videos = await getVids();
-      this.setState({ videos: videos });
+      // const videos = await getVids();
+      // this.setState({ videos: videos });
     }
     catch (err){
       console.log(err);
@@ -19,13 +19,13 @@ export default class VideoList extends Component {
   }
   
   render() {
-    const { videos } = this.state;
+    // const { videos } = this.state;
 
     return (
       <ul className="VideoList" style={{ marginTop: '50px' }}>
-        {videos.map(video => (
+        {/* {videos.map(video => (
           <VideoItem key={video.id} video={video}/>
-        ))}
+        ))} */}
       </ul>
     );
   }
