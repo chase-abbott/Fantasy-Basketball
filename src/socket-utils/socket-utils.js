@@ -23,7 +23,7 @@ export function socketOnChange(callback) {
   socket.on('state-change', (players, draftedPlayers, userOneDrafted, userTwoDrafted, userThreeDrafted) => callback(players, draftedPlayers, userOneDrafted, userTwoDrafted, userThreeDrafted));
 }
 export function socketOnStart(callback) {
-  socket.on('start', (user, interval, time) => callback(user, interval, time));
+  socket.on('start', (user, draftTime, time) => callback(user, draftTime, time));
 }
 export function socketOnCurrentPlayer(callback) {
   socket.on('current-user', (user) => callback(user));

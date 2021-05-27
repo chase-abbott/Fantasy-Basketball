@@ -54,6 +54,7 @@ export default class DraftPage extends Component {
     
  
     socketOnChange((players, draftedPlayers, userOneDrafted, userTwoDrafted, userThreeDrafted) => this.setState({ players, draftedPlayers, userOneDrafted, userTwoDrafted, userThreeDrafted }));
+
     const { draftedPlayers } = this.state;
     
     const playersFromApi = await getPlayers();
@@ -61,6 +62,7 @@ export default class DraftPage extends Component {
     const players = playersFromApi.sort((a, b) => {
       return b.fantasyPoints - a.fantasyPoints;
     });
+
     const updatedPlayers = players.map((player) => {
       const matchingPlayer = draftedPlayers.find(drafted => drafted.playerId === player.playerId);
       return matchingPlayer ? matchingPlayer : player;
@@ -81,9 +83,6 @@ export default class DraftPage extends Component {
     });
    
     this.setState({ searchedPlayers: searchedPlayers });
-
-    
-
   }
 
   handleDraft = async (player) => {
@@ -103,13 +102,14 @@ export default class DraftPage extends Component {
     
   };
 
+ 
+
   handleLogin = () => {
     socketEmitLogin(this.state.user);
     //get rid of?
     socketOnLogin((users) => this.setState({ users: users }));
     this.setState({ loggedIn: true });
    
-
   }
   render() {
     const { userOneDrafted, userTwoDrafted, userThreeDrafted, users, currentUser, time, user, loggedIn, searchedPlayers, players, numberOfDrafted } = this.state;
