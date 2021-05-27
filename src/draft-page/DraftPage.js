@@ -7,7 +7,6 @@ import DraftedPlayers from '../common/DraftedPlayers';
 import { socketEmitChange, socketEmitLogin, socketOnChange, socketOnLogin, socketOnStart, socketOnCurrentPlayer, socketOnEndDraft } from '../socket-utils/socket-utils.js';
 import ChatBox from '../common/ChatBox';
 
-//To utils folder:
 async function getPlayers() {
   const response = await request
     .get('api/players')
@@ -17,6 +16,7 @@ async function getPlayers() {
 
 async function favoritePlayer(player) {
   player.userId = window.localStorage.getItem('USER_ID');
+
   const response = await request.post('/api/me/players')
     .set('Authorization', window.localStorage.getItem('TOKEN'))
     .send(player);
@@ -43,7 +43,7 @@ export default class DraftPage extends Component {
  //userName and id as props
   async componentDidMount() {
     const { draftedPlayers } = this.state;
-   
+
     const myPlayers = await request
       .get('/api/me/players')
       .set('Authorization', window.localStorage.getItem('TOKEN'));
@@ -106,7 +106,7 @@ export default class DraftPage extends Component {
   }
 
   handleDraft = async (player) => {
-    const { players, user, } = this.state;
+    const { players, user } = this.state;
     await favoritePlayer(player);
     player.hasBeenDrafted = true;
     player.userId = user.userId;
