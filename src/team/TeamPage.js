@@ -22,21 +22,27 @@ export default class TeamPage extends Component {
       const points = addTotalPoints(startingFive);
       this.setState({ loading: true, projectedPoints: points });
 
-      const response = request
+      const response = await request
         .get('/api/me/players')
         .set('Authorization', token);
+
+      console.log(response.body);
 
       if (response.body) {
         
         const mungedTeam = mungeTeam(response.body);
+        mungedTeam.userId = window.localStorage.getItem('USER_ID');
+        console.log(mungedTeam);
 
         const newTeam = await request
           .post('/api/me/team')
           .set('Authorization', token)
           .send(mungedTeam);
 
+       
+        this.setState({ bench: newTeam.body.bench, startingFive: newTeam.body.startingFive, teamId: newTeam.body.id, team: newTeam.body.team });
         const updatedPoints = addTotalPoints(startingFive);
-        this.setState({ bench: newTeam.body.bench, startingFive: newTeam.body.startingFive, projectedPoints: updatedPoints, teamId: newTeam.body.id, team: newTeam.body.team });
+        this.setState({ projectedPoints: updatedPoints });
       }
     }
     finally {

@@ -14,6 +14,7 @@ async function getPlayers() {
 }
 
 async function favoritePlayer(player) {
+  player.userId = window.localStorage.getItem('USER_ID');
   const response = await request.post('/api/me/players')
     .set('Authorization', TOKEN)
     .send(player);
@@ -48,17 +49,27 @@ export default class DraftPage extends Component {
       .get('/api/me/players')
       .set('Authorization', window.localStorage.getItem('TOKEN'));
 
+    const myTeam = await request
+      .get('/api/me/team')
+      .set('Authorization', window.localStorage.getItem('TOKEN'));
+    
+    console.log(myTeam.body[1]);
+    console.log(myPlayers.body);
 
-    if (myPlayers.body[1]){
 
-      await request
+    if (myPlayers.body[1] !== undefined){
+
+      const firstDelete = await request
         .delete(`/api/me/players/${window.localStorage.getItem('USER_ID')}`)
         .set('Authorization', token);
         
-      await request
+      console.log(firstDelete);
+
+      const secondDelete = await request
         .delete(`/api/me/team/${window.localStorage.getItem('USER_ID')}`)
         .set.set('Authorization', token);
-
+      
+      console.log(secondDelete);
     }
 
     socketOnStart((user, interval, time) => {
