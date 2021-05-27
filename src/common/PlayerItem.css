@@ -1,0 +1,41 @@
+.PlayerItem {
+    min-width: 150px;
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 5%;
+    box-shadow: 2px 2px 2px 2px grey;
+ 
+  }
+  
+.PlayerItem:hover {
+      transform: scale(1.03);
+      box-shadow: 3px 2px 2px rgb(80, 78, 78);
+      background: white;
+ }
+.PlayerItem:active {
+      transform: scale(1.03);
+      box-shadow: 3px 2px 2px rgb(80, 78, 78);
+      background: white;
+ }
+
+ .drop-li {
+   height: 200px;
+ }
+
+.PG {
+   background-color: #C7DFFD;
+ }
+.SG {
+  background-color: #ADE0BF;
+ }
+.SF {
+  background-color: #F0ECB8;
+ }
+.PF {
+  background-color: #F0BDA4;
+ }
+ .C {
+  background-color: #E2D1DA;
+ }

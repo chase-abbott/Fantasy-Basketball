@@ -1,6 +1,9 @@
 .Header {
   padding: 20px;
   border-bottom: 1px solid lightgray;
+  height: 40px;
+  display: flex;
+  justify-content: space-around;
 }
 
 h1 {
