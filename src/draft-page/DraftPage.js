@@ -36,7 +36,7 @@ export default class DraftPage extends Component {
     time: 0,
     loggedIn: false,
     searchedPlayers: null,
-    numberOfDrafted: 0
+    
   }
  //userName and id as props
   async componentDidMount() {
@@ -89,7 +89,7 @@ export default class DraftPage extends Component {
   }
 
   handleDraft = async (player) => {
-    const { players, user, numberOfDrafted } = this.state;
+    const { players, user, } = this.state;
     await favoritePlayer(player);
     player.hasBeenDrafted = true;
     player.userId = user.userId;
@@ -99,7 +99,7 @@ export default class DraftPage extends Component {
     });
     socketEmitChange(player, updatedPlayers);
     
-    this.setState({ searchedPlayers: updatedPlayers, numberOfDrafted: numberOfDrafted + 1 });
+    
     
  
     
@@ -115,12 +115,12 @@ export default class DraftPage extends Component {
    
   }
   render() {
-    const { userOneDrafted, userTwoDrafted, userThreeDrafted, users, currentUser, time, user, loggedIn, searchedPlayers, players, numberOfDrafted } = this.state;
+    const { userOneDrafted, userTwoDrafted, userThreeDrafted, users, currentUser, time, user, loggedIn, searchedPlayers, players, } = this.state;
     return (
       <div className="DraftPage">
         <button onClick={this.handleLogin} disabled={loggedIn}>Start Draft</button>
         <h5>Time: {time}</h5>
-        {(currentUser.userId === user.userId && numberOfDrafted < 9) &&
+        {currentUser.userId === user.userId &&
         <>
           <PlayerSearch onSearch={this.handleSearch}/>
           <PlayerList players={searchedPlayers ? searchedPlayers : players} onDraft={this.handleDraft}/>
