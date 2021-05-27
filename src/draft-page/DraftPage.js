@@ -15,6 +15,7 @@ async function getPlayers() {
 }
 
 async function favoritePlayer(player) {
+  player.userId = window.localStorage.getItem('USER_ID');
   const response = await request.post('/api/me/players')
     .set('Authorization', TOKEN)
     .send(player);
@@ -40,14 +41,39 @@ export default class DraftPage extends Component {
   }
  //userName and id as props
   async componentDidMount() {
+
+    const { draftedPlayers } = this.state;
+    const token = window.localStorage.getItem('TOKEN');
+
+    const myPlayers = await request
+      .get('/api/me/players')
+      .set('Authorization', token);
+
+    console.log(myPlayers);
     
-    const userId = window.localStorage.getItem('USER_ID');
-    const userName = window.localStorage.getItem('USER_NAME');
-    this.setState({ user: { userId: userId, userName: userName } });
+    if (myPlayers.body[0] !== undefined) {
+      await request
+        .delete(`/api/me/players/${window.localStorage.getItem('USER_ID')}`)
+        .set('Authorization', window.localStorage.getItem('TOKEN'));
+      
+      
+      await request
+        .delete(`/api/me/team/${window.localStorage.getItem('USER_ID')}`)
+        .set('Authorization', window.localStorage.getItem('TOKEN'));
+      
+
+    }
+
+    socketOnStart((user, interval, time) => {
+      this.setState({ currentPlayer: user, time: time });
+
+    
+    
 
    
     socketOnStart((user, draftTime, time) => {
       this.setState({ currentUser: user, time: time });
+
     
     });
     socketOnCurrentPlayer((user) => {this.setState({ currentUser: user });});
