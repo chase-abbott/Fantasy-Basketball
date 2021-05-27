@@ -16,7 +16,7 @@ export default class Home extends Component {
         <div className='draftLink'>
           <Link to='/draft'>Click here to enter your draft</Link>
         </div>
-        {/* <VideoList/> */}
+        <VideoList/>
       </div>
     );
   }
