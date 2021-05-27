@@ -1,7 +1,5 @@
 import { Component } from 'react';
 import { signIn, signUp } from '../auth-utils/auth-utils';
-import Button from 'react-bootstrap/Button';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './AuthPage.css';
 
 export default class AuthPage extends Component {
@@ -53,30 +51,27 @@ export default class AuthPage extends Component {
       <form className="AuthPage" onSubmit={this.handleSubmit}>
         {isSignUp && <p>
           <label>
-            <span>Name: </span>
-            <input name='name' value={name} required={true} onChange={this.handleNameChange}/>
+            <input name='name' value={name} required={true} onChange={this.handleNameChange} placeholder='name'/>
           </label>
         </p>}
 
         <p>
           <label>
-            <span>Email: </span>
-            <input name='email' value={email} required={true} onChange={this.handleEmailChange}/>
+            <input name='email' value={email} required={true} onChange={this.handleEmailChange} placeholder='email'/>
           </label>
         </p>
 
         <p>
           <label>
-            <span>Password: </span>
-            <input name='password' value={password} required={true} onChange={this.handlePasswordChange}/>
+            <input name='password' value={password} required={true} onChange={this.handlePasswordChange} placeholder='password'/>
           </label>
         </p>
 
         <p>
-          <Button type="submit">Sign {isSignUp ? 'Up' : 'In'}</Button>
+          <button type="submit">Sign {isSignUp ? 'Up' : 'In'}</button>
         </p>
         <p>
-          <Button onClick={this.handleSwitch}>{isSignUp ? 'Already Have an Account?' : 'Need an account?'}</Button>
+          <button onClick={this.handleSwitch}>{isSignUp ? 'Already Have an Account?' : 'Need an account?'}</button>
         </p>
 
         {error && <p>{error}</p>}
