@@ -69,10 +69,11 @@ export default class TeamPage extends Component {
           .send(mungedTeam);
 
           
-        // const points = addTotalPoints(newTeam.startingFive);
-        this.setState({ bench: newTeam.body.bench, startingFive: newTeam.body.startingFive, team: newTeam.body.team, teamId: newTeam.body.id });
+        const points = addTotalPoints(newTeam.startingFive);
+        this.setState({ bench: newTeam.body.bench, startingFive: newTeam.body.startingFive, team: newTeam.body.team, projectedPoints: points, teamId: newTeam.body.id });
       } else {
         await this.setTeam(teamResponse.body[0]);
+        this.setState({ projectedPoints: addTotalPoints(teamResponse.body[0].startingFive) });
         
       }
     }
