@@ -4,9 +4,17 @@
   height: 40px;
   display: flex;
   justify-content: space-around;
+  align-items: center;
+   font-family: 'Playfair Display SC', serif;
 }
+
 
 h1 {
   font-size: 2rem;
   font-weight: bold;
+ 
+}
+
+.link {
+  color: black;
 }

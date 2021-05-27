@@ -14,11 +14,10 @@ export default class Home extends Component {
         <Ticker/>
         <ScoreList className='scoreList' scores={scores}/>
         <div className='draftLink'>
-          <Link to='/draft'>Click here to enter your draft</Link>
+          <Link to='/draft'>DRAFT TIME</Link>
         </div>
-        <VideoList/>
+        {/* <VideoList/> */}
       </div>
     );
   }
-
 }

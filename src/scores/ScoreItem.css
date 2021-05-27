@@ -2,26 +2,27 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    border: 2px solid red;
+    border: 2px solid rgb(145, 145, 145);
     margin: 5px;
     width: fit-content;
     padding: 5px;
+    border-radius: 10%;
   
 }
 
 .homeTeam {
-    color: blue
+    color: rgb(89, 89, 241);
 }
 
 .homeTeam span {
-    color: red;
+    color: rgb(255, 61, 61);
 }
 .awayTeam {
-    color: red
+    color: rgb(255, 61, 61);
 }
 
 .awayTeam span {
-    color: blue;
+    color: rgb(89, 89, 241);
 }
 
 li h2 {
