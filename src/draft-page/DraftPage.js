@@ -6,18 +6,16 @@ import PlayerSearch from '../search/PlayerSearch';
 import DraftedPlayers from '../common/DraftedPlayers';
 import { socketEmitChange, socketEmitLogin, socketOnChange, socketOnLogin, socketOnStart, socketOnCurrentPlayer, socketOnEndDraft } from '../socket-utils/socket-utils.js';
 import ChatBox from '../common/ChatBox';
-//To utils folder:
-async function getPlayers() {
-  
 
-  const response = await request.get('api/players')
+async function getPlayers() {
+  const response = await request
+    .get('api/players')
     .set('Authorization', window.localStorage.getItem('TOKEN'));
   return response.body;
 }
 
 async function favoritePlayer(player) {
   player.userId = window.localStorage.getItem('USER_ID');
-  
 
   const response = await request.post('/api/me/players')
     .set('Authorization', window.localStorage.getItem('TOKEN'))
@@ -45,6 +43,7 @@ export default class DraftPage extends Component {
  //userName and id as props
   async componentDidMount() {
     const { draftedPlayers } = this.state;
+
     const myPlayers = await request
       .get('/api/me/players')
       .set('Authorization', window.localStorage.getItem('TOKEN'));
@@ -57,10 +56,6 @@ export default class DraftPage extends Component {
         .delete(`/api/me/team/${window.localStorage.getItem('USER_ID')}`)
         .set('Authorization', window.localStorage.getItem('TOKEN'));
     }
-
-
-
-
 
     const userId = window.localStorage.getItem('USER_ID');
     const userName = window.localStorage.getItem('USER_NAME');
@@ -96,6 +91,7 @@ export default class DraftPage extends Component {
     });
 //
   }
+
   handleSearch = (search) => {
     const { players } = this.state;
     

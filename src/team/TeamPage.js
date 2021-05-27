@@ -3,7 +3,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import PlayerItem from '../common/PlayerItem';
 import request from 'superagent';
 import './TeamPage.css';
-import { addTotalPoints, mungeTeam } from '../utils.js';
+import { addTotalPoints, mungeTeam, findNull } from '../utils.js';
 
 export default class TeamPage extends Component {
   state = {
@@ -16,12 +16,12 @@ export default class TeamPage extends Component {
     teamId: ''
   }
 
-  setTeam = async (team) => {
-    this.setState({ bench: team.bench, startingFive: team.startingFive, team: team.team, teamId: team.id });
-  }
+setTeam = (team) => {
+  this.setState({ bench: team.bench, startingFive: team.startingFive, team: team.team, teamId: team.id });
+}
 
  updateTeam = async (state) => {
-   const { teamId, token } = this.state;
+   const { teamId } = this.state;
    
    const updatedTeam = {
      team: state.team,
@@ -33,7 +33,7 @@ export default class TeamPage extends Component {
 
    const response = await request
      .put(`/api/me/team/${teamId}`)
-     .set('Authorization', token)
+     .set('Authorization', window.localStorage.getItem('TOKEN'))
      .send(updatedTeam);
 
    console.log(response);
@@ -41,56 +41,97 @@ export default class TeamPage extends Component {
    return response.body;
  }
 
-  componentDidMount = async () => {
-    this.mounted = true;
-    try {
-      const { token } = this.state;
-      // const points = addTotalPoints(startingFive);
-      // this.setState({ loading: true, projectedPoints: points });
 
-      const playerResponse = await request
-        .get('/api/me/players')
-        .set('Authorization', token);
 
-      const teamResponse = await request
-        .get('/api/me/team')
-        .set('Authorization', token);
+ grabAndMakeTeams = async () => {
+   const playerResponse = await request
+     .get('/api/me/players')
+     .set('Authorization', window.localStorage.getItem('TOKEN'));
+
+   const teamResponse = await request
+     .get('/api/me/team')
+     .set('Authorization', window.localStorage.getItem('TOKEN'));
+
+
+   console.log('player response', playerResponse.body);
+   console.log('team response', teamResponse.body);
+
+   if (!teamResponse.body[0]) {
+     console.log('there is no team');
+    
+     const mungedTeam = mungeTeam(playerResponse.body);
+     mungedTeam.userId = window.localStorage.getItem('USER_ID');
+
+     const newTeam = await request
+       .post('/api/me/team')
+       .set('Authorization', window.localStorage.getItem('TOKEN'))
+       .send(mungedTeam);
+
+       
+     const points = addTotalPoints(newTeam.body.startingFive);
+    
+     this.setState({ 
+       bench: newTeam.body.bench, 
+       startingFive: newTeam.body.startingFive, 
+       team: newTeam.body.team, 
+       projectedPoints: points, 
+       teamId: newTeam.body.id 
+     });
+     
+
+   } else {
+     this.setTeam(teamResponse.body[0]);
+    
+     this.setState({ projectedPoints: addTotalPoints(teamResponse.body[0].startingFive) });
+     console.log('there is a team');
+   }
+ }
+
+componentDidMount = async () => {
+ 
+  try {
+    await this.grabAndMakeTeams();
+
+    // const playerResponse = await request
+    //   .get('/api/me/players')
+    //   .set('Authorization', window.localStorage.getItem('TOKEN'));
+
+    // const teamResponse = await request
+    //   .get('/api/me/team')
+    //   .set('Authorization', window.localStorage.getItem('TOKEN'));
 
       
-      if (playerResponse.body && !teamResponse.body[0]) {
+    // if (playerResponse.body && !teamResponse.body[0]) {
         
-        const mungedTeam = mungeTeam(playerResponse.body);
-        mungedTeam.userId = window.localStorage.getItem('USER_ID');
+    //   const mungedTeam = mungeTeam(playerResponse.body);
+    //   mungedTeam.userId = window.localStorage.getItem('USER_ID');
 
-        const newTeam = await request
-          .post('/api/me/team')
-          .set('Authorization', token)
-          .send(mungedTeam);
+    //   const newTeam = await request
+    //     .post('/api/me/team')
+    //     .set('Authorization', window.localStorage.getItem('TOKEN'))
+    //     .send(mungedTeam);
 
-        const points = addTotalPoints(newTeam.startingFive);
+    //   const points = addTotalPoints(newTeam.startingFive);
 
-        if (this.mounted){
-          this.setState({ bench: newTeam.body.bench, startingFive: newTeam.body.startingFive, team: newTeam.body.team, projectedPoints: points, teamId: newTeam.body.id });
-        }
+    //   if (this.mounted){
+    //     this.setState({ bench: newTeam.body.bench, startingFive: newTeam.body.startingFive, team: newTeam.body.team, projectedPoints: points, teamId: newTeam.body.id });
+    //   }
 
-      } else {
-        await this.setTeam(teamResponse.body[0]);
+    // } else {
+    //   await this.setTeam(teamResponse.body[0]);
         
-        if (this.mounted) {
-          this.setState({ projectedPoints: addTotalPoints(teamResponse.body[0].startingFive) });
-
-        }
-        
-      }
-    }
-    catch (err){
-      console.log(err);
-    }
-    finally {
-      this.setState({ loading: false });
-      
-    }
+    //   if (this.mounted) {
+    //     this.setState({ projectedPoints: addTotalPoints(teamResponse.body[0].startingFive) });
+    //   }
+    // }
   }
+  catch (err){
+    console.log(err);
+  }
+  finally {
+    this.setState({ loading: false });
+  }
+}
 
   handleDragEnd = async (result) => {
     console.log(result);
@@ -147,16 +188,13 @@ export default class TeamPage extends Component {
     this.setState({ projectedPoints: addTotalPoints(startingFive) });
   }
 
-  componentWillUnmount = () => {
-    this.mounted = false;
-  }
 
   render() {
-    const { bench, startingFive, projectedPoints } = this.state;
-
+    const { bench, startingFive, projectedPoints, team } = this.state;
+   
     return (
       <div >
-        {bench || startingFive
+        {(!findNull(bench) || !findNull(startingFive) || !findNull(team))
           ? <div className="container">
             <h2> Starting Five </h2>
             <DragDropContext onDragEnd={this.handleDragEnd}>
@@ -215,7 +253,7 @@ export default class TeamPage extends Component {
               </Droppable>
             </DragDropContext>
           </div>
-          : <h2> Draft a team! </h2>}
+          : <h2> Draft a team! You need 10 players to field a team! </h2>}
       </div>
     );
   }

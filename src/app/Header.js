@@ -4,20 +4,21 @@ import './Header.css';
 
 class Header extends Component {
 
-  handleClick = async () => {
+  handleClick = () => {
     window.localStorage.clear();
-    this.forceUpdate();
+    window.location.reload();
   }
+
+
 
   render() { 
     let key = window.localStorage.getItem('TOKEN');
     if (key) {
       return (
         <header className="Header">
-          <Link to='/' className='link'><i class="fas fa-basketball-ball"></i></Link>
-          <Link to='/myteam' className='link'>My Team</Link>
-          <Link to='/auth' className='link' onClick={this.handleClick} ><i class="fas fa-sign-out-alt"></i></Link>
-          
+          <Link to='/myteam' > My Team</Link>
+          <Link to='/auth' onClick={this.handleClick}>Sign Out</Link>
+          <Link to='/'>Home</Link>
         </header>
       );
     } else {
