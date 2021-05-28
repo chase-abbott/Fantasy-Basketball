@@ -137,17 +137,19 @@ export default class DraftPage extends Component {
           <h5>Time: {time}</h5>
         </div>
         <div className="draft-body">
-          {/* {currentUser.userId === user.userId &&  */}
-          <div className="draft-players">
-            <PlayerSearch onSearch={this.handleSearch}/>
-            <PlayerList players={searchedPlayers ? searchedPlayers : players} onDraft={this.handleDraft}/>
-          </div> 
           
           <div className="players-div">
             <DraftedPlayers players={userOneDrafted} user={users[0]}/>
             <DraftedPlayers players={userTwoDrafted} user={users[1]}/>
             <DraftedPlayers players={userThreeDrafted} user={users[2]}/>
           </div>
+          {(currentUser.userId === user.userId)
+            ? <div className="draft-players">
+              <PlayerSearch onSearch={this.handleSearch}/>
+              <PlayerList players={searchedPlayers ? searchedPlayers : players} onDraft={this.handleDraft}/>
+            </div> 
+            : <div className="draft-players-container"></div>
+          }
           <div className="chatbox">
             <ChatBox/>
           </div>

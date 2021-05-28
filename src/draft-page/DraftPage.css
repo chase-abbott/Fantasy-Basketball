@@ -5,11 +5,16 @@
 
 .draft-body {
   display: grid;
-  grid-template-columns: 25vw 1fr 25vw;
+  grid-template-columns: .8fr 1fr 25vw;
 }
 
 .draft-players {
   margin-left: 25px;
+  font-weight: 900;
+}
+
+.draft-players > h6 {
+  font-weight: 900;
 }
 
 .players-div {
