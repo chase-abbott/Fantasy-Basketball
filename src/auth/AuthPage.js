@@ -63,7 +63,7 @@ export default class AuthPage extends Component {
 
         <p>
           <label>
-            <input name='password' value={password} required={true} onChange={this.handlePasswordChange} placeholder='password'/>
+            <input name='password' type='password' value={password} required={true} onChange={this.handlePasswordChange} placeholder='password'/>
           </label>
         </p>
 
