@@ -3,7 +3,8 @@
   border-bottom: 1px solid lightgray;
   height: 40px;
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 1fr 4fr 1fr
+  ;
   align-items: center;
   /* font-family: 'Playfair Display SC', serif; */
   background: #bdc3c7;  /* fallback for old browsers */
@@ -16,6 +17,7 @@
 }
 
 .Header > h1 {
+  Grid-column-start: 2;
   justify-self: center;
   color: beige;
   font-size: 60px;
@@ -28,10 +30,6 @@
 h1 {
   font-size: 2rem;
   font-weight: bolder;
-}
-
-.navlinks {
-  grid-column: 2;
 }
 
 .link {
