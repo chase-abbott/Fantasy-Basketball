@@ -17,7 +17,7 @@ export default class PlayerItem extends Component {
       >
         <h3> {player.name} </h3>
         <h4> Position: {player.position} </h4>
-        <h4> {player.fantasyPoints} Fantasy PPG</h4>
+        <h4> {player.fantasyPoints} Projected Fantasy PPG</h4>
       </li >
 
     );

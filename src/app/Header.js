@@ -16,9 +16,9 @@ class Header extends Component {
     if (key) {
       return (
         <header className="Header">
-          <h1> FANTASY BASKETBALL DRAFT </h1>
+          <h1> Hoops.io </h1>
           <nav className="navlinks">
-            <Link to='/' className='link'><i class="fas fa-home"></i></Link>
+            <Link to='/' className='link'><i className="fas fa-home"></i></Link>
             <Link to='/myteam' className='link'><i className="fas fa-basketball-ball"></i></Link>
             <Link to='/auth' className='link' onClick={this.handleClick} ><i className="fas fa-sign-out-alt"></i></Link>
           </nav>
@@ -28,7 +28,7 @@ class Header extends Component {
     } else {
       return (
         <header className='Header'>
-          <span>FANTASY BASKETBALL DRAFT</span>
+          <h1> Hoops.io</h1>
           {/* <span>{time}</span> */}
         </header>
       );

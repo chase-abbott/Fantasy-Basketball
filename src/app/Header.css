@@ -5,18 +5,20 @@
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
-  font-family: 'Playfair Display SC', serif;
+  /* font-family: 'Playfair Display SC', serif; */
   background: #bdc3c7;  /* fallback for old browsers */
   background: -webkit-linear-gradient(to right, #2c3e50, #bdc3c7);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #ec9819, #ebd5ad);
+  background: linear-gradient(0, 0, 0, 0);
   position: relative;
   font-size: 25px;
+  font-family: 'SCOREBOARD', sans-serif;
    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 .Header > h1 {
   justify-self: center;
   color: beige;
+  font-size: 60px;
 }
 
 .links {

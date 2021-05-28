@@ -26,8 +26,13 @@
 
 .bench > li {
   width: 200px;
+  background-color: #FBD1A2;
 }
 
 .starters > li {
-  width: 250px
+  width: 250px;
+  background: #f12711;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to bottom, #f5af19, #f12711);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to bottom, #f5af19, #f12711); 
+
 }
