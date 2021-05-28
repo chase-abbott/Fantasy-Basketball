@@ -32,7 +32,7 @@ render() {
   return (
     <div className="chat-container">
       <ul className="ChatBox">
-        {messages.map((message, index) => {
+        {messages.slice(-23).map((message, index) => {
           return <li key={index} className="my-message">{message}</li>;
         })}
       </ul>
