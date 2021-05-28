@@ -15,6 +15,10 @@ export function socketEmitChange(change, players) {
   socket.emit('state-change', change, players);
 }
 
+// // export function socketOnChange(callback) {
+// //   socket.on('stateChange', change => callback(change));
+// // }
+// //
 // export function socketOnChange(callback) {
 //   socket.on('state-change', change => callback(change));
 // }

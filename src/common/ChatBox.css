@@ -1,3 +1,15 @@
 .ChatBox {
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  height: 400px;
+  color: black;
+  border-radius: 5%;
+
+}
+
+.chat-container {
+  position: sticky;
+  top: 0;
 }

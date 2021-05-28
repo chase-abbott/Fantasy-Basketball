@@ -1,15 +1,29 @@
 .Home {
   display: grid;
-  grid-template-rows: 1fr 3fr 1fr;
-  grid-template-columns: 1fr 3fr 1fr;
+  grid-template-rows: 2fr 1fr 1fr;
+  grid-template-columns: 1fr;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
 }
 
+.home-info {
+  position: relative;
+  display: flex;
+  grid-row: 1;
+  justify-self: center;
+  flex-direction: column;
+  margin-top: 50px;
+  justify-items: center;
+}
+.scores-and-videos {
+  display: grid;
+  /* grid-row: 2; */
+  /* grid-template-columns: auto 1fr; */
+}
+
 .scoreList {
     display: none;
-    grid-row: 2;
     padding: 50px;
 }
 
@@ -17,4 +31,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  font-family: 'Rubik Mono One', sans-serif;
+  font-size: 1.5rem;
+  text-underline-offset: 5px;
+  color: black;
+}
+
+.draftLink:hover {
+        -webkit-transform: scale(1.2);
+        -ms-transform: scale(1.2);
+        transform: scale(1.2);
+        color: white;
+        cursor: pointer;
 }

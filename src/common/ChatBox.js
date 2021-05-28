@@ -30,15 +30,15 @@ render() {
   const { messages, messageOut } = this.state;
 
   return (
-    <div>
+    <div className="chat-container">
+      <ul className="ChatBox">
+        {messages.map((message, index) => {
+          return <li key={index} className="my-message">{message}</li>;
+        })}
+      </ul>
       <form onSubmit={this.handleSubmit}>
         <input value={messageOut} onChange={this.handleChat} id="input" /><button>Send</button>
       </form>
-      <ul className="ChatBox">
-        {messages.map((message, index) => {
-          return <li key={index}>{message}</li>;
-        })}
-      </ul>
     </div>
   );
 }

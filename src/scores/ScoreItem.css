@@ -1,29 +1,34 @@
 .ScoreItem {    
     display: flex;
     flex-direction: row;
-    align-items: center;
-    border: 2px solid red;
+    align-items: flex-start;
+    justify-content: flex-start;
     margin: 5px;
     width: fit-content;
     padding: 5px;
+    border: 1px dotted black;
   
 }
 
 .homeTeam {
-    color: blue
+    color: rgb(89, 89, 241);
 }
 
 .homeTeam span {
-    color: red;
+    color: rgb(255, 61, 61);
 }
 .awayTeam {
-    color: red
+    color: rgb(255, 61, 61);
 }
 
 .awayTeam span {
-    color: blue;
+    color: rgb(89, 89, 241);
 }
 
 li h2 {
     margin: 10px;
+    font-family: 'Playfair Display SC', serif;
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: rgb(0, 0, 0);
 }

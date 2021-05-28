@@ -51,22 +51,19 @@ export default class AuthPage extends Component {
       <form className="AuthPage" onSubmit={this.handleSubmit}>
         {isSignUp && <p>
           <label>
-            <span>Name: </span>
-            <input name='name' value={name} required={true} onChange={this.handleNameChange}/>
+            <input name='name' value={name} required={true} onChange={this.handleNameChange} placeholder='name'/>
           </label>
         </p>}
 
         <p>
           <label>
-            <span>Email: </span>
-            <input name='email' value={email} required={true} onChange={this.handleEmailChange}/>
+            <input name='email' value={email} required={true} onChange={this.handleEmailChange} placeholder='email'/>
           </label>
         </p>
 
         <p>
           <label>
-            <span>Password: </span>
-            <input name='password' value={password} required={true} onChange={this.handlePasswordChange}/>
+            <input name='password' value={password} required={true} onChange={this.handlePasswordChange} placeholder='password'/>
           </label>
         </p>
 
@@ -74,7 +71,7 @@ export default class AuthPage extends Component {
           <button type="submit">Sign {isSignUp ? 'Up' : 'In'}</button>
         </p>
         <p>
-          <button type="button" onClick={this.handleSwitch}>{isSignUp ? 'Already Have an Account?' : 'Need an account?'}</button>
+          <button onClick={this.handleSwitch}>{isSignUp ? 'Already Have an Account?' : 'Need an account?'}</button>
         </p>
 
         {error && <p>{error}</p>}
