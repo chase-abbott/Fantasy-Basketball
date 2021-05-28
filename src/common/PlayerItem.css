@@ -4,14 +4,15 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     border-radius: 5%;
-    box-shadow: 2px 2px 2px 2px grey;
- 
+    box-shadow: 2px 2px 2px 2px rgb(94, 93, 93);
+  
   }
   
 .PlayerItem:hover {
       transform: scale(1.03);
-      box-shadow: 3px 2px 2px rgb(80, 78, 78);
+      box-shadow: 3px 2px 2px rgb(68, 67, 67);
       background: white;
  }
 .PlayerItem:active {
@@ -24,18 +25,20 @@
    height: 200px;
  }
 
-.PG {
-   background-color: #C7DFFD;
+/* .PG {
+   background-color: #F79256;
  }
 .SG {
-  background-color: #ADE0BF;
+  background-color: #FBD1A2;
  }
 .SF {
-  background-color: #F0ECB8;
+  background-color: #7DCFB6;
  }
 .PF {
-  background-color: #F0BDA4;
+  background-color: #00B2CA;
  }
  .C {
-  background-color: #E2D1DA;
- }
+  background-color: #1D4E89;
+ } */
+
+

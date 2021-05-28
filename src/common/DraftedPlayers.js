@@ -11,7 +11,7 @@ export default class DraftedPlayers extends Component {
     
     return (
       <div className="DraftedPlayers">
-        <h6>{user ? user.userName : ''} Team</h6>
+        <h6 className="team-header">{user ? user.userName : ''} Team</h6>
         
         <ul >
           {players && players.map(player => {
