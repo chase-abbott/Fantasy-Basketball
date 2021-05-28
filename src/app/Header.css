@@ -31,8 +31,7 @@ h1 {
 }
 
 .navlinks {
-  position: absolute;
-  left: 1300px;
+  grid-column: 2;
 }
 
 .link {
