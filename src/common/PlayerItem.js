@@ -15,9 +15,12 @@ export default class PlayerItem extends Component {
         ref={reference}
 
       >
-        <h3> {player.name} </h3>
-        <h4> Position: {player.position} </h4>
-        <h4> {player.fantasyPoints} Projected Fantasy PPG</h4>
+        <div className="player-contents">
+          <h3> {player.name} </h3>
+          <h4> Position: {player.position} </h4>
+          <h4> {player.fantasyPoints} Projected Fantasy PPG</h4>
+
+        </div>
       </li >
 
     );
