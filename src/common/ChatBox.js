@@ -20,7 +20,10 @@ export default class ChatBox extends Component {
 
 handleSubmit = e => {
   const { messageOut, user } = this.state;
-  const message = `${user}: ${messageOut}`;
+  const message = {
+    message:`${user}: ${messageOut}`,
+    userId: window.localStorage.getItem('USER_ID')
+  };
   e.preventDefault();
   socketEmitMessage(message);
   this.setState({ messageOut: '' });
@@ -33,7 +36,9 @@ render() {
     <div>
       <ul className="ChatBox">
         {messages.map((message, index) => {
-          return <li key={index}>{message}</li>;
+          return (!(message === messageOut)
+            ? <li key={index} className="my-message">{message}</li>
+            : <li key={index} className="incoming-message">{message}</li>);
         })}
       </ul>
       <form onSubmit={this.handleSubmit}>

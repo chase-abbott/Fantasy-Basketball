@@ -92,6 +92,10 @@ export default class DraftPage extends Component {
 //
   }
 
+  handleEndDraft = () => {
+    
+  }
+
   handleSearch = (search) => {
     const { players } = this.state;
     
@@ -116,10 +120,8 @@ export default class DraftPage extends Component {
     });
     socketEmitChange(player, updatedPlayers);
     
-  
+    this.setState({ currentUser: '' });
   };
-
- 
 
   handleLogin = () => {
     socketEmitLogin(this.state.user);
