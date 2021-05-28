@@ -42,7 +42,7 @@ export default class DraftPage extends Component {
   }
  //userName and id as props
   async componentDidMount() {
-    const { draftedPlayers } = this.state;
+    // const { draftedPlayers } = this.state;
 
     const myPlayers = await request
       .get('/api/me/players')
@@ -66,7 +66,8 @@ export default class DraftPage extends Component {
       this.setState({ currentUser: user, time: time });
     
     });
-    socketOnCurrentPlayer((user) => {this.setState({ currentUser: user });});
+
+    socketOnCurrentPlayer((user) => this.setState({ currentUser: user }));
     socketOnLogin((users) => this.setState({ users: users }));
     
  
@@ -79,17 +80,17 @@ export default class DraftPage extends Component {
     const players = playersFromApi.sort((a, b) => {
       return b.fantasyPoints - a.fantasyPoints;
     });
+//sending all players through socket now so this is not required...
+    // const updatedPlayers = players.map((player) => {
+    //   const matchingPlayer = draftedPlayers.find(drafted => drafted.playerId === player.playerId);
+    //   return matchingPlayer ? matchingPlayer : player;
+    // });
 
-    const updatedPlayers = players.map((player) => {
-      const matchingPlayer = draftedPlayers.find(drafted => drafted.playerId === player.playerId);
-      return matchingPlayer ? matchingPlayer : player;
-    });
-
-    this.setState({ players: updatedPlayers });
+    this.setState({ players: players });
     socketOnEndDraft(() => {
       console.log('draft over');
     });
-//
+
   }
 
   handleEndDraft = () => {
@@ -118,15 +119,15 @@ export default class DraftPage extends Component {
     const updatedPlayers = players.map(p => {
       return p.playerId === player.playerId ? player : p;
     });
+   
+    this.setState({ searchedPlayers: null });
     socketEmitChange(player, updatedPlayers);
-    
     this.setState({ currentUser: '' });
   };
 
   handleLogin = () => {
     socketEmitLogin(this.state.user);
-    //get rid of?
-    socketOnLogin((users) => this.setState({ users: users }));
+    // socketOnLogin((users) => this.setState({ users: users }));
     this.setState({ loggedIn: true });
    
   }
