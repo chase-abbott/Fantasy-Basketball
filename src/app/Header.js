@@ -11,7 +11,7 @@ class Header extends Component {
   }
 
   render() {
-    let time = Date.now();
+  
     let key = window.localStorage.getItem('TOKEN');
     if (key) {
       return (

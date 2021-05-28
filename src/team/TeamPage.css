@@ -26,13 +26,16 @@
 
 .bench > li {
   width: 200px;
-  background-color: #FBD1A2;
+  background: #ffe259;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to top, #ffa751, #ffe259);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to top, #ffa751, #ffe259); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  
 }
 
 .starters > li {
   width: 250px;
-  background: #f12711;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to bottom, #f5af19, #f12711);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to bottom, #f5af19, #f12711); 
-
+  background: #E44D26;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to top, #F16529, #E44D26);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to top, #F16529, #E44D26); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  font-weight: 700;
 }
