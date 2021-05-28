@@ -42,7 +42,7 @@ export default class DraftPage extends Component {
   }
  //userName and id as props
   async componentDidMount() {
-    const { draftedPlayers } = this.state;
+    // const { draftedPlayers } = this.state;
 
     const myPlayers = await request
       .get('/api/me/players')
