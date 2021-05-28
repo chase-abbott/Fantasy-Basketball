@@ -4,9 +4,12 @@
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     grid-gap: 20px;
     margin: 0;
-    margin-bottom: 75px;
     align-items: center;
     padding: 10px;
+}
+
+.container > p{
+  margin-bottom: 75px;
 }
 
 .container {
@@ -16,7 +19,15 @@
   width: auto;
 }
 
-.container>h2 {
+.container > h2 {
   font-size: 30px;
   font-weight: 500;
+}
+
+.bench > li {
+  width: 150px;
+}
+
+.starters > li {
+  width: 200px
 }

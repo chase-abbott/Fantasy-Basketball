@@ -91,39 +91,6 @@ componentDidMount = async () => {
  
   try {
     await this.grabAndMakeTeams();
-
-    // const playerResponse = await request
-    //   .get('/api/me/players')
-    //   .set('Authorization', window.localStorage.getItem('TOKEN'));
-
-    // const teamResponse = await request
-    //   .get('/api/me/team')
-    //   .set('Authorization', window.localStorage.getItem('TOKEN'));
-
-      
-    // if (playerResponse.body && !teamResponse.body[0]) {
-        
-    //   const mungedTeam = mungeTeam(playerResponse.body);
-    //   mungedTeam.userId = window.localStorage.getItem('USER_ID');
-
-    //   const newTeam = await request
-    //     .post('/api/me/team')
-    //     .set('Authorization', window.localStorage.getItem('TOKEN'))
-    //     .send(mungedTeam);
-
-    //   const points = addTotalPoints(newTeam.startingFive);
-
-    //   if (this.mounted){
-    //     this.setState({ bench: newTeam.body.bench, startingFive: newTeam.body.startingFive, team: newTeam.body.team, projectedPoints: points, teamId: newTeam.body.id });
-    //   }
-
-    // } else {
-    //   await this.setTeam(teamResponse.body[0]);
-        
-    //   if (this.mounted) {
-    //     this.setState({ projectedPoints: addTotalPoints(teamResponse.body[0].startingFive) });
-    //   }
-    // }
   }
   catch (err){
     console.log(err);
@@ -206,7 +173,7 @@ componentDidMount = async () => {
                   <ul
                     {...provided.droppableProps}
                     ref={provided.innerRef}
-                    className="TeamPage"
+                    className="TeamPage starters"
                   >
                     {startingFive.map((player, index) => {
 
@@ -220,6 +187,7 @@ componentDidMount = async () => {
                             reference={provided.innerRef}
                             provided={provided}
                             player={player}
+                            className="starter"
                           />
                         )}
 
@@ -229,11 +197,11 @@ componentDidMount = async () => {
                   </ul>
                 )}
               </Droppable>
-              <p> Project total points = {projectedPoints}</p>
+              <p> Lineup Points Per Game = {projectedPoints}</p>
               <h2> Bench </h2>
               <Droppable droppableId="bench" direction="horizontal">
                 {(provided) => (
-                  <ul {...provided.droppableProps} ref={provided.innerRef} className="TeamPage">
+                  <ul {...provided.droppableProps} ref={provided.innerRef} className="TeamPage bench">
                     {bench.map((player, index) => {
 
                       return (<Draggable key={player.playerId} draggableId={String(player.playerId)} index={index}>
@@ -242,6 +210,7 @@ componentDidMount = async () => {
                             reference={provided.innerRef}
                             provided={provided}
                             player={player}
+                            className="bench"
                           />
                         )}
 

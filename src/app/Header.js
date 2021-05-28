@@ -16,9 +16,12 @@ class Header extends Component {
     if (key) {
       return (
         <header className="Header">
-          <Link to='/' className='link'><i className="fas fa-basketball-ball"></i></Link>
-          <Link to='/myteam' className='link'>My Team</Link>
-          <Link to='/auth' className='link' onClick={this.handleClick} ><i className="fas fa-sign-out-alt"></i></Link>
+          <h1> FANTASY BASKETBALL DRAFT </h1>
+          <nav className="navlinks">
+            <Link to='/' className='link'><i class="fas fa-home"></i></Link>
+            <Link to='/myteam' className='link'><i className="fas fa-basketball-ball"></i></Link>
+            <Link to='/auth' className='link' onClick={this.handleClick} ><i className="fas fa-sign-out-alt"></i></Link>
+          </nav>
           
         </header>
       );

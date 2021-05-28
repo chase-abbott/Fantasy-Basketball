@@ -132,17 +132,27 @@ export default class DraftPage extends Component {
     const { userOneDrafted, userTwoDrafted, userThreeDrafted, users, currentUser, time, user, loggedIn, searchedPlayers, players, } = this.state;
     return (
       <div className="DraftPage">
-        <button onClick={this.handleLogin} disabled={loggedIn}>Start Draft</button>
-        <h5>Time: {time}</h5>
-        {currentUser.userId === user.userId &&
-        <>
-          <PlayerSearch onSearch={this.handleSearch}/>
-          <PlayerList players={searchedPlayers ? searchedPlayers : players} onDraft={this.handleDraft}/>
-        </>}
-        <DraftedPlayers players={userOneDrafted} user={users[0]}/>
-        <DraftedPlayers players={userTwoDrafted} user={users[1]}/>
-        <DraftedPlayers players={userThreeDrafted} user={users[2]}/>
-        <ChatBox/>
+        <div className="page-header">
+          <button onClick={this.handleLogin} disabled={loggedIn}>Start Draft</button>
+          <h5>Time: {time}</h5>
+        </div>
+        <div className="draft-body">
+          {/* {currentUser.userId === user.userId &&  */}
+          <div className="draft-players">
+            <PlayerSearch onSearch={this.handleSearch}/>
+            <PlayerList players={searchedPlayers ? searchedPlayers : players} onDraft={this.handleDraft}/>
+          </div> 
+          
+          <div className="players-div">
+            <DraftedPlayers players={userOneDrafted} user={users[0]}/>
+            <DraftedPlayers players={userTwoDrafted} user={users[1]}/>
+            <DraftedPlayers players={userThreeDrafted} user={users[2]}/>
+          </div>
+          <div className="chatbox">
+            <ChatBox/>
+          </div>
+
+        </div>
 
       </div>
     );

@@ -2,30 +2,45 @@
   padding: 20px;
   border-bottom: 1px solid lightgray;
   height: 40px;
-  display: flex;
-  justify-content: space-around;
+  display: grid;
+  grid-template-columns: 1fr auto;
   align-items: center;
   font-family: 'Playfair Display SC', serif;
   background: #bdc3c7;  /* fallback for old browsers */
   background: -webkit-linear-gradient(to right, #2c3e50, #bdc3c7);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #2c3e50, #bdc3c7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
-
+  background: linear-gradient(to right, #2c3e50, #bdc3c7);
+  position: relative;
+  font-size: 25px;
+   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
+.Header > h1 {
+  justify-self: center;
+  color: beige;
+}
+
+.links {
+  display: flex;
+}
 
 h1 {
   font-size: 2rem;
   font-weight: bolder;
- 
+}
+
+.navlinks {
+  position: absolute;
+  left: 1300px;
 }
 
 .link {
   color: black;
+  margin: 10px;
+  font-weight: 900;
 }
 
 .link:hover {
-  color: white;
+  color: rgb(255, 136, 0);
 }
 
 span {

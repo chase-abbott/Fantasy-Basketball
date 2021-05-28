@@ -31,14 +31,14 @@ render() {
 
   return (
     <div>
-      <form onSubmit={this.handleSubmit}>
-        <input value={messageOut} onChange={this.handleChat} id="input" /><button>Send</button>
-      </form>
       <ul className="ChatBox">
         {messages.map((message, index) => {
           return <li key={index}>{message}</li>;
         })}
       </ul>
+      <form onSubmit={this.handleSubmit}>
+        <input value={messageOut} onChange={this.handleChat} id="input" /><button>Send</button>
+      </form>
     </div>
   );
 }
