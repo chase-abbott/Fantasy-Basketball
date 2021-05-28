@@ -1,6 +1,5 @@
 .Home {
   display: grid;
-  grid-template-rows: 2fr 1fr 1fr;
   grid-template-columns: 1fr;
   flex-direction: column;
   justify-content: space-between;
@@ -43,4 +42,9 @@
         transform: scale(1.2);
         color: white;
         cursor: pointer;
+}
+
+.videos {
+  display: flex;
+  justify-content: center;
 }

@@ -25,6 +25,11 @@
    height: 200px;
  }
 
+ .player-contents {
+   width: max-content;
+   height: max-content;
+ }
+
 /* .PG {
    background-color: #F79256;
  }
