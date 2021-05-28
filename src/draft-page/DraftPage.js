@@ -114,6 +114,7 @@ export default class DraftPage extends Component {
     const updatedPlayers = players.map(p => {
       return p.playerId === player.playerId ? player : p;
     });
+    this.setState({ currentUser: '' });
     socketEmitChange(player, updatedPlayers);
     
   
