@@ -64,5 +64,6 @@ test('Grabs five unqiue positions and remaing five from an array of 10', () => {
       'fantasyPoints': 0
     }]
   const expected = mungeTeams(team);
-  expect(expected).toBe(0);
+  // not sure what this function is supposed to do???
+  expect(expected).toBe(0); 
 })

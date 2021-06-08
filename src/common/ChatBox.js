@@ -8,12 +8,13 @@ export default class ChatBox extends Component {
    messages: [],
    user: localStorage.getItem('USER_NAME')
  }
+
  componentDidMount() {
    socketOnMessageIn((messages) => {
-     this.setState({ messages }); 
+     this.setState({ messages: messages.slice(-23) }); 
    });
-
  }
+
  handleChat = e => {
    this.setState({ messageOut: e.target.value });
  }
@@ -32,7 +33,8 @@ render() {
   return (
     <div className="chat-container">
       <ul className="ChatBox">
-        {messages.slice(-23).map((message, index) => {
+        {/* Limit what's in state! */}
+        {messages.map((message, index) => {
           return <li key={index} className="my-message">{message}</li>;
         })}
       </ul>
