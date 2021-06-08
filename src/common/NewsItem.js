@@ -6,6 +6,7 @@ export default class NewsItem extends Component {
     state = {
       news: []
     }
+    
     componentDidMount = async () => {
       const news = await getNews();
       this.setState({ news: news });

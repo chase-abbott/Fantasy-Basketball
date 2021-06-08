@@ -5,15 +5,18 @@ export default class PlayerSearch extends Component {
   state = {
     search: ''
   }
+
   handleSearchChange = (e) => {
     this.setState({ search: e.target.value });
   }
+
   handleSubmit = e => {
     const { onSearch } = this.props;
     const { search } = this.state;
     e.preventDefault();
     onSearch(search);
   }
+  
   render() {
        
     return (

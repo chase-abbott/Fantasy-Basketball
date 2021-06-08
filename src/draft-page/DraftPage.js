@@ -4,9 +4,19 @@ import request from 'superagent';
 import PlayerList from '../player-list/PlayerList';
 import PlayerSearch from '../search/PlayerSearch';
 import DraftedPlayers from '../common/DraftedPlayers';
-import { socketEmitChange, socketEmitLogin, socketOnChange, socketOnLogin, socketOnStart, socketOnCurrentPlayer, socketOnEndDraft } from '../socket-utils/socket-utils.js';
 import ChatBox from '../common/ChatBox';
+import { 
+  socketEmitChange,
+  socketEmitLogin,
+  socketOnChange,
+  socketOnLogin,
+  socketOnStart,
+  socketOnCurrentPlayer,
+  socketOnEndDraft 
+} from '../socket-utils/socket-utils.js';
 
+
+// Put these service calls in their own file (or with the other ones)
 async function getPlayers() {
   const response = await request
     .get('api/players')
@@ -44,27 +54,29 @@ export default class DraftPage extends Component {
   async componentDidMount() {
     // const { draftedPlayers } = this.state;
 
+    // it just gets ugly to have these in the component...
     const myPlayers = await request
       .get('/api/me/players')
       .set('Authorization', window.localStorage.getItem('TOKEN'));
     console.log(myPlayers);
-    if (myPlayers.body[0] !== undefined) {
+
+    const { userId } = this.props;
+
+    if(myPlayers.body[0] !== undefined) {
       await request
-        .delete(`/api/me/players/${window.localStorage.getItem('USER_ID')}`)
+        .delete(`/api/me/players/${userId}`)
         .set('Authorization', window.localStorage.getItem('TOKEN'));
       await request
-        .delete(`/api/me/team/${window.localStorage.getItem('USER_ID')}`)
+        .delete(`/api/me/team/${userId}`)
         .set('Authorization', window.localStorage.getItem('TOKEN'));
     }
 
-    const userId = window.localStorage.getItem('USER_ID');
-    const userName = window.localStorage.getItem('USER_NAME');
-    this.setState({ user: { userId: userId, userName: userName } });
+    // no, don't duplicate source of truth.
+    // this.setState({ user: { userId: userId, userName: userName } });
 
    
     socketOnStart((user, draftTime, time) => {
       this.setState({ currentUser: user, time: time });
-    
     });
 
     socketOnCurrentPlayer((user) => this.setState({ currentUser: user }));
@@ -73,13 +85,11 @@ export default class DraftPage extends Component {
  
     socketOnChange((players, draftedPlayers, userOneDrafted, userTwoDrafted, userThreeDrafted) => this.setState({ players, draftedPlayers, userOneDrafted, userTwoDrafted, userThreeDrafted }));
 
-   
-    
     const playersFromApi = await getPlayers();
 
-    const players = playersFromApi.sort((a, b) => {
-      return b.fantasyPoints - a.fantasyPoints;
-    });
+    // do this sort on the server via SQL: ORDER BY
+    const players = playersFromApi.sort((a, b) => b.fantasyPoints - a.fantasyPoints);
+
 //sending all players through socket now so this is not required...
     // const updatedPlayers = players.map((player) => {
     //   const matchingPlayer = draftedPlayers.find(drafted => drafted.playerId === player.playerId);
@@ -112,9 +122,13 @@ export default class DraftPage extends Component {
 
   handleDraft = async (player) => {
     const { players, user } = this.state;
+    const { userId } = this.props;
+
     await favoritePlayer(player);
+    
     player.hasBeenDrafted = true;
-    player.userId = user.userId;
+    player.userId = userId;
+    
     //change player item to boolean userName
     const updatedPlayers = players.map(p => {
       return p.playerId === player.playerId ? player : p;

@@ -88,7 +88,6 @@ setTeam = (team) => {
  }
 
 componentDidMount = async () => {
- 
   try {
     await this.grabAndMakeTeams();
   }

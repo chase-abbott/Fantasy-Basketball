@@ -4,7 +4,10 @@ export async function getNews() {
   const response = await request
     .get('/api/news')
     .set('Authorization', window.localStorage.getItem('TOKEN'));
+  
   const news = response.body;
+  // no, better transform the data on the server
+  // or deal with data directly when formatting...
   const results = JSON.stringify(news);
   const results2 = results.replaceAll('{"news":"', '');
   const results3 = results2.replaceAll('"}', '');

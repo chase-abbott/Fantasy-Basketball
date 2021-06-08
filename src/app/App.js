@@ -1,27 +1,24 @@
 import { Component } from 'react';
-import Header from './Header';
-import Footer from './Footer';
-import Home from '../home/Home';
-import TeamPage from '../team/TeamPage';
-import AuthPage from '../auth/AuthPage';
-
 import {
   BrowserRouter as Router,
   Route,
   Switch,
   Redirect
 } from 'react-router-dom';
-import './App.css';
+import Header from './Header';
+import Footer from './Footer';
+import Home from '../home/Home';
+import TeamPage from '../team/TeamPage';
+import AuthPage from '../auth/AuthPage';
 import DraftPage from '../draft-page/DraftPage';
+import './App.css';
 
 class App extends Component {
 
   state = {
-
     token: window.localStorage.getItem('TOKEN'),
     userId: window.localStorage.getItem('USER_ID'),
     userName: window.localStorage.getItem('USER_NAME')
-
   }
 
   handleUser = user => {
@@ -32,12 +29,20 @@ class App extends Component {
     this.setState({ token: user.token });
   }
 
+  handleSignOut = () => {
+    window.localStorage.clear();
+    // you should be able to clear state and get same result:
+    // window.location.reload();
+    this.setState({ token: '', userId: '', userName: '' })
+  }
+
   render() {
-    const { token } = this.state;
+    const { token, userId } = this.state;
+
     return (
       <div className="App">
         <Router>
-          <Header />
+          <Header isSignedIn={!!token} onSignOut={this.handleSignOut}/>
           <main>
             <Switch>
               <Route path="/" exact={true}
@@ -45,7 +50,6 @@ class App extends Component {
                   token
                     ? <Home {...routerProps} />
                     : <Redirect to="/auth" />
-
                 )}
               />
 
@@ -59,13 +63,12 @@ class App extends Component {
               <Route path="/draft" exact={true}
                 render={routerProps => (
                   token
-                    ? <DraftPage {...routerProps} />
+                    ? <DraftPage {...routerProps} userId={userId} userName={userName} />
                     : <Redirect to="/auth" />
-
                 )}
               />
 
-              <Route path="/myteam"
+              <Route path="/my-team"
                 render={routerProps => (
                   token
                     ? <TeamPage {...routerProps} />

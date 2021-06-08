@@ -8,7 +8,7 @@ export default class PlayerList extends Component {
     const { players, onDraft } = this.props;
     return (
       <div className="PlayerList">
-        {players.slice(0, 100).map(player => {
+        {players.slice(100).map(player => {
           return <PlayerItem key={player.playerId} player={player} onDraft={onDraft}/>;
         })}
       </div>

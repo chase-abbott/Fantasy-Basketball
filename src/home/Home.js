@@ -11,13 +11,6 @@ export default class Home extends Component {
     startingFive: ''
   }
 
-  handleClick = () => {
-    let click = window.confirm('Heading to the draft will delete your current team. Continue?');
-    if (click === true) {
-      window.location = '/draft';
-    }
-  }
-
   componentDidMount = async () => {
     const userTeam = await request
       .get('/api/me/team')
@@ -27,10 +20,22 @@ export default class Home extends Component {
       this.setState({ startingFive: userTeam.body.startingFive });
     }
   }
+
+  handleClick = () => {
+    const { history } = this.props;
+    if(!window.confirm('Heading to the draft will delete your current team. Continue?')) {
+      return;
+    }
+
+    // you need to use history.push with React Router so in "knows" about the change
+    history.push('/push');
+  }
+
   
   render() {
     const { startingFive } = this.state;
     const { scores } = this.props;
+    
     return (
       <div className="Home">
         <Ticker/>

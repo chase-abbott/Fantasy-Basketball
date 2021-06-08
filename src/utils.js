@@ -17,34 +17,18 @@ export async function signIn(credentials) {
 }
 
 export function mungeTeam(team){
-  const newTeam = {};
-
-  newTeam.team = {
-    data: team
+  // not sure why each of these has extra sub object with "data" property ???
+  return {
+    team: { data: team },
+    startingFive: { data: team.slice(0, 5) },
+    bench: { date: team.slice(5, 10) }
   };
-
-  const startingFive = [team[0], team[1], team[2], team[3], team[4]];
-
-  newTeam.startingFive = {
-    data: startingFive
-  };
-
-  const bench = [team[5], team[6], team[7], team[8], team[9]];
-
-  newTeam.bench = {
-    data: bench
-  };
-
-  return newTeam;
 }
 
 export function addTotalPoints(startingFive) {
-  const sum = startingFive.reduce((accumulator, currentValue) => {
-    return accumulator += currentValue.fantasyPoints;
-  }, 0);
-  return sum;
+  return startingFive.reduce((a, b) => a + b);
 }
 
 export function findNull(teamArray){
-  return teamArray.find(element => element === null);
+  return teamArray.find(element => !element);
 }
